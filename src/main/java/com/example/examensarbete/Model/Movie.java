@@ -14,15 +14,19 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
 
+    String ID;
+    int year;
+    double movie_length;
+    double rating;
     String imdb_id;
     String title;
-    int year;
-//    String description;
-//    double movie_length;
-//    double rating;
-//    String trailer;
-//    String image_url;
-//    Date release;
+    String description;
+    String plot;
+    String trailer;
+    String release;
+    String image_url;
+    String banner;
+
 
 
 

@@ -2,9 +2,7 @@ package com.example.examensarbete.Controller;
 
 import com.example.examensarbete.Model.Movie;
 import com.example.examensarbete.Model.Title;
-import com.example.examensarbete.Service.FetchService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.examensarbete.Service.MovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -12,9 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -24,7 +20,7 @@ public class MovieController {
     @Value("${RAPID_API_KEY}")
     private String rapidApiKey;
 
-    FetchService fetchService = new FetchService();
+    MovieService fetchService = new MovieService();
 
 
 

@@ -23,11 +23,11 @@ public class MovieController {
     ObjectMapper om = new ObjectMapper();
 
     @Value("${RAPID_API_KEY}")
-    private String key;
+    private String rapidApiKey;
 
     @GetMapping("/{title}")
     public List<Title> getID(@PathVariable String title){
-        System.out.println(key);
+        System.out.println(rapidApiKey);
 
         String jsonDto = title;
         List<Title> output = new ArrayList<>();
@@ -36,13 +36,14 @@ public class MovieController {
         String url = "https://data-imdb1.p.rapidapi.com/movie/imdb_id/byTitle/" + jsonDto + "/";
         HttpMethod method = HttpMethod.GET;
         HttpHeaders headers = new HttpHeaders();
-        headers.add("x-rapidapi-key", "hej");
+        headers.add("x-rapidapi-key", rapidApiKey);
         headers.add("x-rapidapi-host", "data-imdb1.p.rapidapi.com");
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity<String> entity = new HttpEntity<>(jsonDto, headers);
         try {
             ResponseEntity<String> result = rt.exchange(url, method, entity, String.class);
+            System.out.println(result);
             if (result.getStatusCode().is2xxSuccessful()) {
                 List<Title> utput = om.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
                 output.add(utput.get(0));
@@ -50,8 +51,6 @@ public class MovieController {
                 output.add(utput.get(2));
                 output.add(utput.get(3));
                 output.add(utput.get(4));
-
-
 
             }
         } catch (Exception e){

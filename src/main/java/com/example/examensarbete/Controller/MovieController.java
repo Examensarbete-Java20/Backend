@@ -4,6 +4,7 @@ import com.example.examensarbete.Model.Title;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,10 +22,12 @@ public class MovieController {
     RestTemplate rt = new RestTemplate();
     ObjectMapper om = new ObjectMapper();
 
+    @Value("${RAPID_API_KEY}")
+    private String key;
 
     @GetMapping("/{title}")
     public List<Title> getID(@PathVariable String title){
-
+        System.out.println(key);
 
         String jsonDto = title;
         List<Title> output = new ArrayList<>();

@@ -21,6 +21,7 @@ target/
 
 ##
 .env
+src/main/resources/application-local.properties
 
 ### NetBeans ###
 /nbproject/private/

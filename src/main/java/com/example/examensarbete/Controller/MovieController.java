@@ -48,6 +48,8 @@ public class MovieController {
                 output.add(utput.get(3));
                 output.add(utput.get(4));
 
+
+
             }
         } catch (Exception e){
             System.out.println("CONNECTION FAIL");

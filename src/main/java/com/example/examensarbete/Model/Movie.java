@@ -17,12 +17,12 @@ public class Movie {
     String imdb_id;
     String title;
     int year;
-    String description;
-    double movie_length;
-    double rating;
-    String trailer;
-    String image_url;
-    Date release;
+//    String description;
+//    double movie_length;
+//    double rating;
+//    String trailer;
+//    String image_url;
+//    Date release;
 
 
 

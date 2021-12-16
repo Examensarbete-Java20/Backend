@@ -1,6 +1,8 @@
 package com.example.examensarbete.Controller;
 
+import com.example.examensarbete.Model.Movie;
 import com.example.examensarbete.Model.Title;
+import com.example.examensarbete.Service.FetchService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -19,44 +21,26 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "/movie")
 public class MovieController {
-    RestTemplate rt = new RestTemplate();
-    ObjectMapper om = new ObjectMapper();
-
     @Value("${RAPID_API_KEY}")
     private String rapidApiKey;
 
-    @GetMapping("/{title}")
-    public List<Title> getID(@PathVariable String title){
-        System.out.println(rapidApiKey);
-
-        String jsonDto = title;
-        List<Title> output = new ArrayList<>();
+    FetchService fetchService = new FetchService();
 
 
-        String url = "https://data-imdb1.p.rapidapi.com/movie/imdb_id/byTitle/" + jsonDto + "/";
-        HttpMethod method = HttpMethod.GET;
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("x-rapidapi-key", rapidApiKey);
-        headers.add("x-rapidapi-host", "data-imdb1.p.rapidapi.com");
-        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        HttpEntity<String> entity = new HttpEntity<>(jsonDto, headers);
-        try {
-            ResponseEntity<String> result = rt.exchange(url, method, entity, String.class);
-            System.out.println(result);
-            if (result.getStatusCode().is2xxSuccessful()) {
-                List<Title> utput = om.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
-                output.add(utput.get(0));
-                output.add(utput.get(1));
-                output.add(utput.get(2));
-                output.add(utput.get(3));
-                output.add(utput.get(4));
 
-            }
-        } catch (Exception e){
-            System.out.println("CONNECTION FAIL");
-        }
+    @GetMapping("/title/{title}")
+    public ResponseEntity<List<Title>> getID(@PathVariable String title){
+        return ResponseEntity.ok(fetchService.fetchTitle(title, rapidApiKey));
+//        try{
+//            return ResponseEntity.ok(fetchService.fetchTitle(title, rapidApiKey));
+//        }
+//        catch(Exception e){}
+//        return null;
+    }
 
-        return output;
+    @GetMapping("/{imdb_id}")
+    public ResponseEntity<Movie> getMovie(@PathVariable String imdb_id){
+        return ResponseEntity.ok(fetchService.fetchMovie(imdb_id, rapidApiKey));
     }
 }

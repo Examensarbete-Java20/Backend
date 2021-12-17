@@ -36,7 +36,7 @@ public class SeriesController {
     }
 
     @GetMapping("/{imdb_id}")
-    public ResponseEntity<Serie> getSerie(@PathVariable String imdb_id){
-        return ResponseEntity.ok(fetchService.fetchSerie(imdb_id, rapidApiKey));
+    public ResponseEntity<?> getSerie(@PathVariable String imdb_id){
+        return fetchService.fetchSerie(imdb_id, rapidApiKey);
     }
 }

@@ -22,21 +22,13 @@ public class MovieController {
 
     MovieService fetchService = new MovieService();
 
-
-
-
     @GetMapping("/title/{title}")
     public ResponseEntity<List<Title>> getID(@PathVariable String title){
         return ResponseEntity.ok(fetchService.fetchTitle(title, rapidApiKey));
-//        try{
-//            return ResponseEntity.ok(fetchService.fetchTitle(title, rapidApiKey));
-//        }
-//        catch(Exception e){}
-//        return null;
     }
 
     @GetMapping("/{imdb_id}")
-    public ResponseEntity<Movie> getMovie(@PathVariable String imdb_id){
-        return ResponseEntity.ok(fetchService.fetchMovie(imdb_id, rapidApiKey));
+    public ResponseEntity<?> getMovie(@PathVariable String imdb_id){
+        return fetchService.fetchMovie(imdb_id, rapidApiKey);
     }
 }

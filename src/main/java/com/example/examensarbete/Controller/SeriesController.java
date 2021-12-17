@@ -22,17 +22,9 @@ public class SeriesController {
 
     SerieService fetchService = new SerieService();
 
-
-
-
     @GetMapping("/title/{title}")
     public ResponseEntity<List<Title>> getID(@PathVariable String title){
         return ResponseEntity.ok(fetchService.fetchTitle(title, rapidApiKey));
-//        try{
-//            return ResponseEntity.ok(fetchService.fetchTitle(title, rapidApiKey));
-//        }
-//        catch(Exception e){}
-//        return null;
     }
 
     @GetMapping("/{imdb_id}")

@@ -20,7 +20,7 @@ public class MovieController {
     @Value("${RAPID_API_KEY}")
     private String rapidApiKey;
 
-    MovieService fetchService = new MovieService();
+    private final MovieService fetchService;
 
     @GetMapping("/title/{title}")
     public ResponseEntity<List<Title>> getID(@PathVariable String title){

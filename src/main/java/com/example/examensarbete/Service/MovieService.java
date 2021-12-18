@@ -6,6 +6,8 @@ import com.example.examensarbete.Model.Title;
 import com.example.examensarbete.Repositories.MovieRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -17,12 +19,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
+@Slf4j
 public class MovieService {
     private RapidApiMethods rapid = new RapidApiMethods();
     private RestTemplate rt = new RestTemplate();
     private ObjectMapper om = new ObjectMapper();
 
-    private MovieRepository movieRepository;
+    private final MovieRepository movieRepository;
 
 
     public List<Title> fetchTitle(String title, String rapidApiKey){
@@ -53,8 +57,9 @@ public class MovieService {
             if (result.getStatusCode().is2xxSuccessful() && result.getBody().length() != 14) {
                 output = om.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
 
-               // movieRepository.save(output);
+                movieRepository.save(output);
 
+                log.info(String.valueOf(movieRepository));
             }
         } catch (Exception e){
             System.out.println(e.getMessage());

@@ -3,6 +3,7 @@ package com.example.examensarbete.Service;
 import com.example.examensarbete.Model.CustomException;
 import com.example.examensarbete.Model.Movie;
 import com.example.examensarbete.Model.Title;
+import com.example.examensarbete.Repositories.MovieRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.coyote.Response;
@@ -21,6 +22,8 @@ public class MovieService {
     private RestTemplate rt = new RestTemplate();
     private ObjectMapper om = new ObjectMapper();
 
+    private MovieRepository movieRepository;
+
 
     public List<Title> fetchTitle(String title, String rapidApiKey){
         List<Title> output = new ArrayList<>();
@@ -30,6 +33,7 @@ public class MovieService {
             if (result.getStatusCode().is2xxSuccessful()) {
                 List<Title> tempList = om.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
                 output = tempList.stream().limit(5).collect(Collectors.toList());
+
 
             }
         } catch (Exception e){
@@ -47,8 +51,9 @@ public class MovieService {
 
         try {
             if (result.getStatusCode().is2xxSuccessful() && result.getBody().length() != 14) {
-                Movie tempMovie = om.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
-                output = tempMovie;
+                output = om.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
+
+               // movieRepository.save(output);
 
             }
         } catch (Exception e){

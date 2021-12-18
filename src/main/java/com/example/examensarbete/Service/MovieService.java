@@ -2,8 +2,11 @@ package com.example.examensarbete.Service;
 
 import com.example.examensarbete.Model.Movie;
 import com.example.examensarbete.Model.Title;
+import com.example.examensarbete.Repositories.MovieRepository;
+import com.example.examensarbete.Repositories.TitleRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +22,12 @@ public class MovieService {
     private ObjectMapper om = new ObjectMapper();
 
 
+//    @Autowired
+//    TitleRepository titleRepository;
+    @Autowired
+    MovieRepository movieRepository;
+
+
     public List<Title> fetchTitle(String title, String rapidApiKey){
         List<Title> output = new ArrayList<>();
 
@@ -27,6 +36,8 @@ public class MovieService {
             if (result.getStatusCode().is2xxSuccessful()) {
                 List<Title> tempList = om.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
                 output = tempList.stream().limit(5).collect(Collectors.toList());
+                System.out.println(output);
+               // titleRepository.saveAll(output);
 
             }
         } catch (Exception e){
@@ -45,6 +56,7 @@ public class MovieService {
             if (result.getStatusCode().is2xxSuccessful()) {
                 Movie tempMovie = om.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
                 output = tempMovie;
+                movieRepository.save(output);
             }
         } catch (Exception e){
             System.out.println("CONNECTION FAIL");

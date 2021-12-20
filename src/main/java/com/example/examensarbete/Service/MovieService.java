@@ -88,4 +88,14 @@ public class MovieService {
         movie.setExist(true);
        return movieRepository.save(movie);
     }
+
+    public Movie updateMovie(Movie movie){
+         Movie temp = movieRepository.getByID(movie.getID());
+
+        if (temp == null)
+            throw new MovieException(HttpStatus.BAD_REQUEST + " Movie not found");
+
+            movie.setOwnRating(movie.getTotalRating() / movie.getTotalOfVoters());
+            return movieRepository.save(movie);
+    }
 }

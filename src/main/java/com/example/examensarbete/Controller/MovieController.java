@@ -55,4 +55,13 @@ public class MovieController {
         }
 
     }
+    @PostMapping("/update")
+    public ResponseEntity<?> updateMovie(@RequestBody Movie movie){
+        try {
+            return ResponseEntity.ok(movieService.updateMovie(movie));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+
+    }
 }

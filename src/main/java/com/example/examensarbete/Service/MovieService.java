@@ -102,12 +102,7 @@ public class MovieService {
     }
     public List<Movie> getTopTen(){
          List<Movie> temp = movieRepository.findAll();
-        temp.sort(new Comparator<Movie>() {
-            @Override
-            public int compare(Movie movie1, Movie movie2) {
-                return Double.compare(movie2.getOwnRating(), movie1.getOwnRating());
-            }
-        });
+        temp.sort((movie1, movie2) -> Double.compare(movie2.getOwnRating(), movie1.getOwnRating()));
 
          return temp.stream().limit(10).collect(Collectors.toList());
     }

@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -97,5 +99,16 @@ public class MovieService {
 
             movie.setOwnRating(movie.getTotalRating() / movie.getTotalOfVoters());
             return movieRepository.save(movie);
+    }
+    public List<Movie> getTopTen(){
+         List<Movie> temp = movieRepository.findAll();
+        temp.sort(new Comparator<Movie>() {
+            @Override
+            public int compare(Movie movie1, Movie movie2) {
+                return Double.compare(movie2.getOwnRating(), movie1.getOwnRating());
+            }
+        });
+
+         return temp.stream().limit(10).collect(Collectors.toList());
     }
 }

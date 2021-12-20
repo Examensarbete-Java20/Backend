@@ -62,6 +62,13 @@ public class MovieController {
         } catch (MovieException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
-
+    }
+    @GetMapping("/topTen")
+    public ResponseEntity<?> getTopTen(){
+        try {
+            return ResponseEntity.ok(movieService.getTopTen());
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
     }
 }

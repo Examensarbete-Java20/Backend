@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -28,8 +29,10 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
 
+    @Value("${RAPID_API_KEY}")
+    private String rapidApiKey;
 
-    public List<Title> fetchTitle(String title, String rapidApiKey){
+    public List<Title> fetchTitle(String title){
         List<Title> output = new ArrayList<>();
 
         try {
@@ -48,7 +51,7 @@ public class MovieService {
         return output;
     }
 
-    public ResponseEntity<?> fetchMovie(String imdb_id, String rapidApiKey) {
+    public ResponseEntity<?> fetchMovie(String imdb_id) {
         Movie output = null;
 
             ResponseEntity<String> result = rt.exchange(rapid.getMovieEndpoint(true,imdb_id), HttpMethod.GET, rapid.getEntity(imdb_id,rapidApiKey), String.class);
@@ -59,7 +62,7 @@ public class MovieService {
 
                 movieRepository.save(output);
 
-                log.info(String.valueOf(movieRepository));
+                log.info(String.valueOf(output));
             }
         } catch (Exception e){
             System.out.println(e.getMessage());

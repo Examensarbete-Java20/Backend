@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
@@ -13,8 +16,9 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
-
+    @Id
     String ID;
+
     int year;
     double movie_length;
     double rating;
@@ -26,10 +30,5 @@ public class Movie {
     String release;
     String image_url;
     String banner;
-
-
-
-
-
 }
 

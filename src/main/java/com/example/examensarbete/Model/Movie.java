@@ -8,6 +8,7 @@ import org.springframework.data.annotation.Id;
 
 
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -16,6 +17,7 @@ public class Movie {
 
     @Id
     String ID;
+
     int year;
     double movie_length;
     double rating;
@@ -27,10 +29,5 @@ public class Movie {
     String release;
     String image_url;
     String banner;
-
-
-
-
-
 }
 

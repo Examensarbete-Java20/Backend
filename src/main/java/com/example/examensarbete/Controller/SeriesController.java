@@ -22,14 +22,15 @@ public class SeriesController {
     private String rapidApiKey;
 
     @Autowired
-    private SerieService fetchService;
+    private SerieService serieService;
+
 
 
 
 
     @GetMapping("/title/{title}")
     public ResponseEntity<List<Title>> getID(@PathVariable String title){
-        return ResponseEntity.ok(fetchService.fetchTitle(title, rapidApiKey));
+        return ResponseEntity.ok(serieService.fetchTitle(title, rapidApiKey));
 //        try{
 //            return ResponseEntity.ok(fetchService.fetchTitle(title, rapidApiKey));
 //        }
@@ -39,6 +40,6 @@ public class SeriesController {
 
     @GetMapping("/{imdb_id}")
     public ResponseEntity<Serie> getSerie(@PathVariable String imdb_id){
-        return ResponseEntity.ok(fetchService.fetchSerie(imdb_id, rapidApiKey));
+        return ResponseEntity.ok(serieService.fetchSerie(imdb_id, rapidApiKey));
     }
 }

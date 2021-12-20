@@ -67,7 +67,21 @@ public class MovieService {
         return output;
     }
 
-    public Movie getmovieFromdb(String imdb_id){
-        return movieRepository.findByImdb_id(imdb_id);
+    public Movie getMovieByImdbId(String imdbId){
+        Movie temp = movieRepository.getByImdbId(imdbId);
+
+        if (temp == null)
+            throw new MovieException(HttpStatus.NOT_FOUND + " Movie not found");
+
+        return temp;
+    }
+
+    public Movie saveMovie(Movie movie){
+        Movie temp = movieRepository.getByImdbId(movie.getImdbId());
+
+        if (temp != null)
+            throw new MovieException(HttpStatus.BAD_REQUEST + " Movie already exists in database");
+
+       return movieRepository.save(movie);
     }
 }

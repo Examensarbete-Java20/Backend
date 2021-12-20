@@ -1,5 +1,6 @@
 package com.example.examensarbete.Controller;
 
+import com.example.examensarbete.Model.Movie;
 import com.example.examensarbete.Service.MovieService;
 import com.example.examensarbete.Exception.MovieException;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +37,22 @@ public class MovieController {
 
 
     @GetMapping("/getmovie/{imdb_id}")
-    public ResponseEntity<?> getmoviefromdb(@PathVariable String imdb_id){
-        return ResponseEntity.ok(movieService.getmovieFromdb(imdb_id));
+    public ResponseEntity<?> getMovieFromDB(@PathVariable String imdb_id){
+        try {
+            return ResponseEntity.ok(movieService.getMovieByImdbId(imdb_id));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> saveMovieToDB(@RequestBody Movie movie){
+        try {
+            return ResponseEntity.ok(movieService.saveMovie(movie));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+
     }
 }

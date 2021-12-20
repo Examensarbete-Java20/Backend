@@ -49,16 +49,19 @@ public class MovieService {
         return output;
     }
 
-    public Movie fetchMovie(String imdb_id){
-        Movie output = null;
+    public Movie fetchMovie(String imdbId){
+        Movie output = movieRepository.getByImdbId(imdbId);
 
-        try {
-            ResponseEntity<String> result = restTemplate.exchange(rapid.getMovieEndpoint(true,imdb_id), HttpMethod.GET, rapid.getEntity(imdb_id,rapidApiKey), String.class);
-            if (result.getStatusCode().is2xxSuccessful()  && result.getBody().length() != 14) {
-                output  = objectMapper.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
+        if (output == null){
+            try {
+                ResponseEntity<String> result = restTemplate.exchange(rapid.getMovieEndpoint(true, imdbId), HttpMethod.GET, rapid.getEntity(imdbId, rapidApiKey), String.class);
+                if (result.getStatusCode().is2xxSuccessful() && result.getBody().length() != 14) {
+                    output = objectMapper.readValue(result.getBody().substring(11, result.getBody().length() - 1), new TypeReference<>() {
+                    });
+                }
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
             }
-        } catch (JsonProcessingException e){
-            e.printStackTrace();
         }
 
         if (output == null)
@@ -82,6 +85,7 @@ public class MovieService {
         if (temp != null)
             throw new MovieException(HttpStatus.BAD_REQUEST + " Movie already exists in database");
 
+        movie.setExist(true);
        return movieRepository.save(movie);
     }
 }

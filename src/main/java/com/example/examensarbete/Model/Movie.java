@@ -17,20 +17,28 @@ import org.springframework.data.annotation.Id;
 public class Movie {
 
     @Id
-    String ID;
-
-    int year;
-    double movie_length;
-    double rating;
+    private String ID;
 
     @JsonProperty("imdb_id")
-    String imdbId;
-    String title;
-    String description;
-    String plot;
-    String trailer;
-    String release;
-    String image_url;
-    String banner;
+    private String imdbId;
+
+    private double rating;
+
+    private double ownRating;
+    private int totalOfVoters;
+    private int totalRating;
+
+    private int year;
+    private double movie_length;
+
+    private String title;
+    private String description;
+    private String plot;
+    private String trailer;
+    private String release;
+    private String image_url;
+    private String banner;
+    // exist för frontend ifall filmen finns i db eller inte sätts när filmen sparas
+    private boolean exist;
 }
 

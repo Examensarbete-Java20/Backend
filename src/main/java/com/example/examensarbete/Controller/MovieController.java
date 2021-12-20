@@ -5,6 +5,7 @@ import com.example.examensarbete.Model.Title;
 import com.example.examensarbete.Service.MovieService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ import java.util.List;
 @Slf4j
 public class MovieController {
 
-    @RequiredArgsConstructor
+    @Autowired
     private MovieService fetchService;
 
     @GetMapping("/title/{title}")

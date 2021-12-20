@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MovieRepository extends MongoRepository<Movie, String> {
-    Movie findByTitle(String title);
+    Movie findByImdb_id(String title);
 }

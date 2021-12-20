@@ -66,4 +66,8 @@ public class MovieService {
         return output;
 
     }
+
+    public Movie getmovieFromdb(String imdb_id){
+        return movieRepository.findByImdb_id(imdb_id);
+    }
 }

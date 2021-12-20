@@ -4,6 +4,7 @@ import com.example.examensarbete.Model.Serie;
 import com.example.examensarbete.Model.Title;
 import com.example.examensarbete.Service.SerieService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +21,8 @@ public class SeriesController {
     @Value("${RAPID_API_KEY}")
     private String rapidApiKey;
 
-    SerieService fetchService = new SerieService();
+    @Autowired
+    private SerieService fetchService;
 
 
 

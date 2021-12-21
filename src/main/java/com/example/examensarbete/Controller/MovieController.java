@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/movie")

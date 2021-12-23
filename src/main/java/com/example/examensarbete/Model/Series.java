@@ -12,7 +12,7 @@ import org.springframework.data.annotation.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Serie {
+public class Series {
 
     @Id
     private String ID;

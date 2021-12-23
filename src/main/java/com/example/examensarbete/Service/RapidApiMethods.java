@@ -12,7 +12,7 @@ public class RapidApiMethods {
         return "https://data-imdb1.p.rapidapi.com/movie/imdb_id/byTitle/" + titleOrID + "/";
     }
 
-    public String getSerieEndpoint (boolean meta, String titleOrID) {
+    public String getSeriesEndpoint (boolean meta, String titleOrID) {
         if (meta)
             return "https://data-imdb1.p.rapidapi.com/series/id/" + titleOrID + "/";
         return "https://data-imdb1.p.rapidapi.com/series/idbyTitle/" + titleOrID + "/";

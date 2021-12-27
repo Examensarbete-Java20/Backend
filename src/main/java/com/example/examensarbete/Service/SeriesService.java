@@ -1,8 +1,6 @@
 package com.example.examensarbete.Service;
 
-import com.example.examensarbete.Exception.MovieException;
 import com.example.examensarbete.Exception.SeriesException;
-import com.example.examensarbete.Model.Movie;
 import com.example.examensarbete.Model.Series;
 import com.example.examensarbete.Model.Title;
 import com.example.examensarbete.Repositories.SeriesRepository;
@@ -27,52 +25,29 @@ public class SeriesService {
     private String rapidApiKey;
 
     private RapidApiMethods rapid = new RapidApiMethods();
-    private RestTemplate rt = new RestTemplate();
-    private ObjectMapper om = new ObjectMapper();
+    private RestTemplate restTemplate = new RestTemplate();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private SeriesRepository seriesRepository;
 
 
-    public List<Title> fetchTitle(String title){
-        List<Title> output = new ArrayList<>();
-        try {
-            ResponseEntity<String> result = rt.exchange(rapid.getSeriesEndpoint(false,title), HttpMethod.GET, rapid.getEntity(title,rapidApiKey), String.class);
-            if (result.getStatusCode().is2xxSuccessful()) {
-                System.out.println(result.getBody().substring(11, result.getBody().length()-1));
-                List<Title> tempList = om.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
-                output = tempList.stream().limit(5).collect(Collectors.toList());
+    public List<Title> getTitles(String title){
+        List<Title> output = rapid.getTitles(title, rapidApiKey, rapid.SERIES).stream().limit(5).collect(Collectors.toList());
 
-            }
-        } catch (JsonProcessingException e){
-            System.out.println("CONNECTION FAIL");
-            e.printStackTrace();
-        }
         if (output.size() == 0)
             throw new SeriesException(HttpStatus.NOT_FOUND + "  Cant find anything on that title");
 
         return output;
     }
 
-    public Series getSeriesByImdbId(String imdb_id){
-        Series output = seriesRepository.getByImdbId(imdb_id);
+    public Series getSeriesByImdbId(String imdbId){
+        Series output = rapid.getSeriesByImdbId(imdbId,rapidApiKey,seriesRepository);
 
-        try {
-            ResponseEntity<String> result = rt.exchange(rapid.getSeriesEndpoint(true,imdb_id), HttpMethod.GET, rapid.getEntity(imdb_id,rapidApiKey), String.class);
-            if (result.getStatusCode().is2xxSuccessful()) {
-                Series tempMovie = om.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
-                output = tempMovie;
-            }
-        } catch (JsonProcessingException e){
-            System.out.println("CONNECTION FAIL");
-            e.printStackTrace();
-        }
         if (output == null)
             throw new SeriesException(HttpStatus.NOT_FOUND + "  Series not found");
 
-
         return output;
-
     }
 
     public Series saveSeries(Series series){

@@ -32,53 +32,22 @@ public class MovieService {
     private MovieRepository movieRepository;
 
 
-    public List<Title> fetchTitle(String title){
-        List<Title> output = new ArrayList<>();
-            try {
-            ResponseEntity<String> result = restTemplate.exchange(rapid.getMovieEndpoint(false,title), HttpMethod.GET, rapid.getEntity(title,rapidApiKey), String.class);
-            if (result.getStatusCode().is2xxSuccessful()  && result.getBody().length() != 14) {
-                List<Title> tempList = objectMapper.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
-                output = tempList.stream().limit(5).collect(Collectors.toList());
-                System.out.println(output);
+    public List<Title> getTitles(String title){
+        List<Title> output = rapid.getTitles(title, rapidApiKey, rapid.MOVIE).stream().limit(5).collect(Collectors.toList());
 
-            }
-        } catch (JsonProcessingException e){
-            e.printStackTrace();
-        }
         if (output.size() == 0)
             throw new MovieException(HttpStatus.NOT_FOUND + "  Cant find anything on that title");
 
         return output;
     }
 
-    public Movie fetchMovie(String imdbId){
-        Movie output = movieRepository.getByImdbId(imdbId);
-
-        if (output == null){
-            try {
-                ResponseEntity<String> result = restTemplate.exchange(rapid.getMovieEndpoint(true, imdbId), HttpMethod.GET, rapid.getEntity(imdbId, rapidApiKey), String.class);
-                if (result.getStatusCode().is2xxSuccessful() && result.getBody().length() != 14) {
-                    output = objectMapper.readValue(result.getBody().substring(11, result.getBody().length() - 1), new TypeReference<>() {
-                    });
-                }
-            } catch (JsonProcessingException e) {
-                e.printStackTrace();
-            }
-        }
+    public Movie getMovieByImdbId(String imdbId){
+        Movie output = rapid.getMovieByImdbId(imdbId,rapidApiKey,movieRepository);
 
         if (output == null)
-            throw new MovieException(HttpStatus.NOT_FOUND + "  Movie not found");
-
-        return output;
-    }
-
-    public Movie getMovieByImdbId(String imdbId){
-        Movie temp = movieRepository.getByImdbId(imdbId);
-
-        if (temp == null)
             throw new MovieException(HttpStatus.NOT_FOUND + " Movie not found");
 
-        return temp;
+        return output;
     }
 
     public Movie saveMovie(Movie movie){

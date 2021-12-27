@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/series")
 public class SeriesController {
-    @Value("${RAPID_API_KEY}")
-    private String rapidApiKey;
 
     @Autowired
     private SeriesService seriesService;
@@ -27,7 +25,7 @@ public class SeriesController {
     @GetMapping("/title/{title}")
     public ResponseEntity<?> getID(@PathVariable String title){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(seriesService.fetchTitle(title));
+            return ResponseEntity.status(HttpStatus.OK).body(seriesService.getTitles(title));
         }
         catch(SeriesException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
@@ -35,7 +33,7 @@ public class SeriesController {
     }
 
     @GetMapping("/{imdb_id}")
-    public ResponseEntity<?> getMovie(@PathVariable String imdb_id){
+    public ResponseEntity<?> getSeries(@PathVariable String imdb_id){
         try {
             return ResponseEntity.status(HttpStatus.OK).body(seriesService.getSeriesByImdbId(imdb_id));
         } catch (SeriesException exception) {
@@ -45,7 +43,7 @@ public class SeriesController {
 
 
     @GetMapping("/getmovie/{imdb_id}")
-    public ResponseEntity<?> getMovieFromDB(@PathVariable String imdb_id){
+    public ResponseEntity<?> getSeriesFromDB(@PathVariable String imdb_id){
         try {
             return ResponseEntity.ok(seriesService.getSeriesByImdbId(imdb_id));
         } catch (SeriesException exception) {
@@ -55,7 +53,7 @@ public class SeriesController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> saveMovieToDB(@RequestBody Series series){
+    public ResponseEntity<?> saveSeriesToDB(@RequestBody Series series){
         try {
             return ResponseEntity.ok(seriesService.saveSeries(series));
         } catch (SeriesException exception) {
@@ -64,7 +62,7 @@ public class SeriesController {
 
     }
     @PostMapping("/update")
-    public ResponseEntity<?> updateMovie(@RequestBody Series series){
+    public ResponseEntity<?> updateSeries(@RequestBody Series series){
         try {
             return ResponseEntity.ok(seriesService.updateSeries(series));
         } catch (SeriesException exception) {

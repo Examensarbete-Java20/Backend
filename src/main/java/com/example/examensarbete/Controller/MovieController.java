@@ -20,7 +20,7 @@ public class MovieController {
     @GetMapping("/title/{title}")
     public ResponseEntity<?> getID(@PathVariable String title){
         try{
-            return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchTitle(title));
+            return ResponseEntity.status(HttpStatus.OK).body(movieService.getTitles(title));
         }
         catch(MovieException exception){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
@@ -30,21 +30,10 @@ public class MovieController {
     @GetMapping("/{imdb_id}")
     public ResponseEntity<?> getMovie(@PathVariable String imdb_id){
         try {
-            return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchMovie(imdb_id));
+            return ResponseEntity.status(HttpStatus.OK).body(movieService.getMovieByImdbId(imdb_id));
         } catch (MovieException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
-    }
-
-
-    @GetMapping("/getmovie/{imdb_id}")
-    public ResponseEntity<?> getMovieFromDB(@PathVariable String imdb_id){
-        try {
-            return ResponseEntity.ok(movieService.getMovieByImdbId(imdb_id));
-        } catch (MovieException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
-
     }
 
     @PostMapping()

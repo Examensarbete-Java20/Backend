@@ -37,32 +37,23 @@ public class MovieAndSeriesService {
         List<List> output = new ArrayList<>();
         output.add(new ArrayList<Movie>());
         output.add(new ArrayList<Series>());
-        try {
-            ResponseEntity<String> moviesResult = restTemplate.exchange(rapid.getMovieEndpoint(false, title), HttpMethod.GET, rapid.getEntity(title, rapidApiKey), String.class);
-            ResponseEntity<String> seriesResult = restTemplate.exchange(rapid.getSeriesEndpoint(false, title), HttpMethod.GET, rapid.getEntity(title, rapidApiKey), String.class);
-            if (moviesResult.getStatusCode().is2xxSuccessful()) {
-                List<Title> temp = objectMapper.readValue(moviesResult.getBody().substring(11, moviesResult.getBody().length() - 1), new TypeReference<>() {
-                });
-                temp.forEach(movie -> {
-                    Movie tempMovie = rapid.getMovieByImdbId(movie.getImdb_id(), rapidApiKey, movieRepository);
-                    if (tempMovie != null)
-                        output.get(0).add(tempMovie);
-                });
-            }
-            if (seriesResult.getStatusCode().is2xxSuccessful()) {
-                List<Title> temp = objectMapper.readValue(seriesResult.getBody().substring(11, seriesResult.getBody().length() - 1), new TypeReference<>() {
-                });
-                temp.forEach(series -> {
-                    Series tempSeries = rapid.getSeriesByImdbId(series.getImdb_id(), rapidApiKey, seriesRepository);
-                    if (tempSeries != null)
-                        output.get(1).add(tempSeries);
-                });
-            }
 
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        List<Title> movieResult = rapid.getTitles(title, rapidApiKey, rapid.MOVIE);
+        List<Title> seriesResult = rapid.getTitles(title, rapidApiKey, rapid.SERIES);
 
+
+        movieResult.forEach(movie -> {
+            Movie tempMovie = rapid.getMovieByImdbId(movie.getImdb_id(), rapidApiKey, movieRepository);
+            if (tempMovie != null)
+                output.get(0).add(tempMovie);
+        });
+
+        seriesResult.forEach(series -> {
+            Series tempSeries = rapid.getSeriesByImdbId(series.getImdb_id(), rapidApiKey, seriesRepository);
+            if (tempSeries != null)
+                output.get(1).add(tempSeries);
+        });
+        
         return output;
     }
 }

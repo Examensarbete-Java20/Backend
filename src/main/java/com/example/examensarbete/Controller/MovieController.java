@@ -1,46 +1,64 @@
 package com.example.examensarbete.Controller;
 
 import com.example.examensarbete.Model.Movie;
-import com.example.examensarbete.Model.Title;
-import com.example.examensarbete.Service.FetchService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.examensarbete.Service.MovieService;
+import com.example.examensarbete.Exception.MovieException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/movie")
 public class MovieController {
-    @Value("${RAPID_API_KEY}")
-    private String rapidApiKey;
 
-    FetchService fetchService = new FetchService();
-
-
-
+    @Autowired
+    private MovieService movieService;
 
     @GetMapping("/title/{title}")
-    public ResponseEntity<List<Title>> getID(@PathVariable String title){
-        return ResponseEntity.ok(fetchService.fetchTitle(title, rapidApiKey));
-//        try{
-//            return ResponseEntity.ok(fetchService.fetchTitle(title, rapidApiKey));
-//        }
-//        catch(Exception e){}
-//        return null;
+    public ResponseEntity<?> getID(@PathVariable String title){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(movieService.getTitles(title));
+        }
+        catch(MovieException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
     }
 
     @GetMapping("/{imdb_id}")
-    public ResponseEntity<Movie> getMovie(@PathVariable String imdb_id){
-        return ResponseEntity.ok(fetchService.fetchMovie(imdb_id, rapidApiKey));
+    public ResponseEntity<?> getMovie(@PathVariable String imdb_id){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(movieService.getMovieByImdbId(imdb_id));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> saveMovieToDB(@RequestBody Movie movie){
+        try {
+            return ResponseEntity.ok(movieService.saveMovie(movie));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+
+    }
+    @PostMapping("/update")
+    public ResponseEntity<?> updateMovie(@RequestBody Movie movie){
+        try {
+            return ResponseEntity.ok(movieService.updateMovie(movie));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+    @GetMapping("/topTen")
+    public ResponseEntity<?> getTopTen(){
+        try {
+            return ResponseEntity.ok(movieService.getTopTen());
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
     }
 }

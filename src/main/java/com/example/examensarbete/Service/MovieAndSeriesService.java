@@ -5,13 +5,9 @@ import com.example.examensarbete.Model.Series;
 import com.example.examensarbete.Model.Title;
 import com.example.examensarbete.Repositories.MovieRepository;
 import com.example.examensarbete.Repositories.SeriesRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -53,7 +49,7 @@ public class MovieAndSeriesService {
             if (tempSeries != null)
                 output.get(1).add(tempSeries);
         });
-        
+
         return output;
     }
 }

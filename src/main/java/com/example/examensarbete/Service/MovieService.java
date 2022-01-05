@@ -32,7 +32,7 @@ public class MovieService {
     private MovieRepository movieRepository;
 
 
-    public List<Title> getTitles(String title){
+    public List<Title> getTitles(String title) {
         List<Title> output = rapid.getTitles(title, rapidApiKey, rapid.MOVIE).stream().limit(5).collect(Collectors.toList());
 
         if (output.size() == 0)
@@ -41,8 +41,8 @@ public class MovieService {
         return output;
     }
 
-    public Movie getMovieByImdbId(String imdbId){
-        Movie output = rapid.getMovieByImdbId(imdbId,rapidApiKey,movieRepository);
+    public Movie getMovieByImdbId(String imdbId) {
+        Movie output = rapid.getMovieByImdbId(imdbId, rapidApiKey, movieRepository);
 
         if (output == null)
             throw new MovieException(HttpStatus.NOT_FOUND + " Movie not found");
@@ -50,29 +50,31 @@ public class MovieService {
         return output;
     }
 
-    public Movie saveMovie(Movie movie){
+    public Movie saveMovie(Movie movie) {
         Movie temp = movieRepository.getByImdbId(movie.getImdbId());
 
         if (temp != null)
             throw new MovieException(HttpStatus.BAD_REQUEST + " Movie already exists in database");
 
         movie.setExist(true);
-       return movieRepository.save(movie);
+        return movieRepository.save(movie);
     }
 
-    public Movie updateMovie(Movie movie){
-         Movie temp = movieRepository.getByID(movie.getID());
+    public Movie updateMovieRating(Movie movie, int rating) {
+        movie.setTotalRating(movie.getTotalRating() + rating);
+        movie.setTotalOfVoters(movie.getTotalOfVoters() + 1);
+        if (!movie.isExist())
+            movie.setExist(true);
 
-        if (temp == null)
-            throw new MovieException(HttpStatus.BAD_REQUEST + " Movie not found");
+        movie.setOwnRating(movie.getTotalRating() / movie.getTotalOfVoters());
+        return movieRepository.save(movie);
 
-            movie.setOwnRating(movie.getTotalRating() / movie.getTotalOfVoters());
-            return movieRepository.save(movie);
     }
-    public List<Movie> getTopTen(){
-         List<Movie> temp = movieRepository.findAll();
+
+    public List<Movie> getTopTen() {
+        List<Movie> temp = movieRepository.findAll();
         temp.sort((movie1, movie2) -> Double.compare(movie2.getOwnRating(), movie1.getOwnRating()));
 
-         return temp.stream().limit(10).collect(Collectors.toList());
+        return temp.stream().limit(10).collect(Collectors.toList());
     }
 }

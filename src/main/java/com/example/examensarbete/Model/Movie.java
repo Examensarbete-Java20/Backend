@@ -25,8 +25,8 @@ public class Movie {
     private double rating;
 
     private double ownRating;
-    private int totalOfVoters;
-    private int totalRating;
+    private double totalOfVoters;
+    private double totalRating;
 
     private int year;
     private double movie_length;

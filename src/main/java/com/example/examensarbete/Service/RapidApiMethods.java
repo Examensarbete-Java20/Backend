@@ -66,16 +66,18 @@ public class RapidApiMethods {
     public Series getSeriesByImdbId(String imdbId, String rapidApiKey, SeriesRepository repo) {
         Series output = repo.getByImdbId(imdbId);
 
-        try {
-            ResponseEntity<String> result = restTemplate.exchange(getSeriesEndpoint(true, imdbId), HttpMethod.GET, getEntity(imdbId, rapidApiKey), String.class);
-            if (result.getStatusCode().is2xxSuccessful()) {
-                Series tempMovie = objectMapper.readValue(result.getBody().substring(11, result.getBody().length() - 1), new TypeReference<>() {
-                });
-                output = tempMovie;
+        if (output == null) {
+            try {
+                ResponseEntity<String> result = restTemplate.exchange(getSeriesEndpoint(true, imdbId), HttpMethod.GET, getEntity(imdbId, rapidApiKey), String.class);
+                if (result.getStatusCode().is2xxSuccessful()) {
+                    Series tempMovie = objectMapper.readValue(result.getBody().substring(11, result.getBody().length() - 1), new TypeReference<>() {
+                    });
+                    output = tempMovie;
+                }
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+                return null;
             }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            return null;
         }
 
         return output;

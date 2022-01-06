@@ -1,12 +1,14 @@
 package com.example.examensarbete.Model;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+
+
+
 
 @Data
 @AllArgsConstructor
@@ -23,8 +25,8 @@ public class Series {
     private double rating;
 
     private double ownRating;
-    private int totalOfVoters;
-    private int totalRating;
+    private double totalOfVoters;
+    private double totalRating;
 
     private int year;
     private double movie_length;

@@ -1,6 +1,7 @@
 package com.example.examensarbete.Service;
 
 import com.example.examensarbete.Exception.SeriesException;
+import com.example.examensarbete.Model.Movie;
 import com.example.examensarbete.Model.Series;
 import com.example.examensarbete.Model.Title;
 import com.example.examensarbete.Repositories.SeriesRepository;
@@ -60,15 +61,17 @@ public class SeriesService {
         return seriesRepository.save(series);
     }
 
-    public Series updateSeries(Series series){
-        Series temp = seriesRepository.getByID(series.getID());
-
-        if (temp == null)
-            throw new SeriesException(HttpStatus.BAD_REQUEST + " Series not found");
+    public Series updateSeriesRating(Series series, int rating) {
+        series.setTotalRating(series.getTotalRating() + rating);
+        series.setTotalOfVoters(series.getTotalOfVoters() + 1);
+        if (!series.isExist())
+            series.setExist(true);
 
         series.setOwnRating(series.getTotalRating() / series.getTotalOfVoters());
+        System.out.println(series);
         return seriesRepository.save(series);
     }
+
     public List<Series> getTopTen(){
         List<Series> temp = seriesRepository.findAll();
         temp.sort((movie1, movie2) -> Double.compare(movie2.getOwnRating(), movie1.getOwnRating()));

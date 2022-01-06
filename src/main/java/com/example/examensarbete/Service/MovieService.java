@@ -67,6 +67,7 @@ public class MovieService {
             movie.setExist(true);
 
         movie.setOwnRating(movie.getTotalRating() / movie.getTotalOfVoters());
+        System.out.println(movie);
         return movieRepository.save(movie);
 
     }

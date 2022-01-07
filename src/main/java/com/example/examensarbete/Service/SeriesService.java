@@ -81,7 +81,7 @@ public class SeriesService {
 
     public List<Series> fetchTitle(String title){
         List<Series> output = new ArrayList<>();
-        List<Title> seriesResult = rapid.getTitles(title, rapidApiKey, rapid.MOVIE);
+        List<Title> seriesResult = rapid.getTitles(title, rapidApiKey, rapid.SERIES);
 
         seriesResult.forEach(serie -> {
             Series tempSeries = rapid.getSeriesByImdbId(serie.getImdb_id(), rapidApiKey, seriesRepository);

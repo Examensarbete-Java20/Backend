@@ -1,7 +1,7 @@
 package com.example.examensarbete.Service;
 
 import com.example.examensarbete.Exception.SeriesException;
-import com.example.examensarbete.Model.Movie;
+import com.example.examensarbete.Model.Series;
 import com.example.examensarbete.Model.Series;
 import com.example.examensarbete.Model.Title;
 import com.example.examensarbete.Repositories.SeriesRepository;
@@ -79,4 +79,18 @@ public class SeriesService {
         return temp.stream().limit(10).collect(Collectors.toList());
     }
 
+    public List<Series> fetchTitle(String title){
+        List<Series> output = new ArrayList<>();
+        List<Title> seriesResult = rapid.getTitles(title, rapidApiKey, rapid.MOVIE);
+
+        seriesResult.forEach(serie -> {
+            Series tempSeries = rapid.getSeriesByImdbId(serie.getImdb_id(), rapidApiKey, seriesRepository);
+            if (tempSeries != null)
+                output.add(tempSeries);
+        });
+
+        return output;
+    }
+
 }
+

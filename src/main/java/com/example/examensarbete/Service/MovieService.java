@@ -78,4 +78,17 @@ public class MovieService {
 
         return temp.stream().limit(10).collect(Collectors.toList());
     }
+
+    public List<Movie> fetchTitle(String title){
+        List<Movie> output = new ArrayList<>();
+        List<Title> movieResult = rapid.getTitles(title, rapidApiKey, rapid.MOVIE);
+
+        movieResult.forEach(movie -> {
+            Movie tempMovie = rapid.getMovieByImdbId(movie.getImdb_id(), rapidApiKey, movieRepository);
+            if (tempMovie != null)
+                output.add(tempMovie);
+        });
+
+        return output;
+    }
 }

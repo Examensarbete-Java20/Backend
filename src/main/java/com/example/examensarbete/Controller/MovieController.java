@@ -36,6 +36,15 @@ public class MovieController {
         }
     }
 
+    @GetMapping("/all/{imdb_id}")
+    public ResponseEntity<?> fetchMovie(@PathVariable String imdb_id){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchTitle(imdb_id));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
     @PostMapping()
     public ResponseEntity<?> saveMovieToDB(@RequestBody Movie movie){
         try {

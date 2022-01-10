@@ -12,8 +12,6 @@ import lombok.NoArgsConstructor;
 public class Title {
 
 
-    //String id;
-    String imdb_id;
-
-    String title;
+    private String imdb_id;
+    private String title;
 }

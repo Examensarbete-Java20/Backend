@@ -1,6 +1,7 @@
 package com.example.examensarbete.Service;
 
 import com.example.examensarbete.Model.Movie;
+import com.example.examensarbete.Model.Series;
 import com.example.examensarbete.Model.Title;
 import com.example.examensarbete.Repositories.MovieRepository;
 import com.example.examensarbete.Exception.MovieException;
@@ -88,6 +89,23 @@ public class MovieService {
             if (tempMovie != null)
                 output.add(tempMovie);
         });
+
+        return output;
+    }
+
+
+    public List<Movie> getFiveMovies(String title, int counter){
+        List<Movie> output = new ArrayList<>();
+        List<Title> movieResult = rapid.getTitles(title, rapidApiKey, rapid.MOVIE);
+
+        if (counter >= 0 && counter <= movieResult.size() - 1)
+        for (int i = counter; i < counter + 5; i++){
+            if (i <= movieResult.size() - 1){
+                Movie tempMovie = rapid.getMovieByImdbId(movieResult.get(i).getImdb_id(), rapidApiKey, movieRepository);
+                if (tempMovie != null)
+                    output.add(tempMovie);
+            }
+        }
 
         return output;
     }

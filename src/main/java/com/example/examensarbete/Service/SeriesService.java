@@ -92,5 +92,22 @@ public class SeriesService {
         return output;
     }
 
+
+    public List<Series> getFiveSeries(String title, int counter){
+        List<Series> output = new ArrayList<>();
+        List<Title> seriesResult = rapid.getTitles(title, rapidApiKey, rapid.SERIES);
+
+        if (counter >= 0 && counter <= seriesResult.size() - 1)
+        for (int i = counter; i < counter + 5; i++){
+            if (i <= seriesResult.size() - 1) {
+                Series tempSeries = rapid.getSeriesByImdbId(seriesResult.get(i).getImdb_id(), rapidApiKey, seriesRepository);
+                if (tempSeries != null)
+                    output.add(tempSeries);
+            }
+        }
+
+        return output;
+    }
+
 }
 

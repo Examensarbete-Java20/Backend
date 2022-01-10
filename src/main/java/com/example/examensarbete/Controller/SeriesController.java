@@ -50,6 +50,15 @@ public class SeriesController {
         }
     }
 
+    @GetMapping("/all/{imdb_id}/{counter}")
+    public ResponseEntity<?> getFiveSeries(@PathVariable String imdb_id, @PathVariable int counter){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(seriesService.getFiveSeries(imdb_id, counter));
+        } catch (SeriesException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
 
     @GetMapping("/getseries/{imdb_id}")
     public ResponseEntity<?> getSeriesFromDB(@PathVariable String imdb_id){

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
 
@@ -14,9 +15,15 @@ public class WatchList {
     @Id
     private String ID;
     private String title;
+    @DocumentReference
     private User user;
+    @DocumentReference
     private List<User> users;
+    @DocumentReference
+    private List<User> invited;
+    @DocumentReference
     private List<Movie> movies;
+    @DocumentReference
     private List<Series> series;
 
     public void addUser(User user) {
@@ -25,6 +32,14 @@ public class WatchList {
 
     public void removeUser(User user) {
         this.users.remove(user);
+    }
+
+    public void inviteUser(User user) {
+        this.invited.add(user);
+    }
+
+    public void removeInvite(String username) {
+        this.invited.remove(username);
     }
 
     public void addMovie(Movie movie) {

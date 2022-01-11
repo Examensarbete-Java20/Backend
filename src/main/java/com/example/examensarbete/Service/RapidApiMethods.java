@@ -1,6 +1,5 @@
 package com.example.examensarbete.Service;
 
-import com.example.examensarbete.Exception.MovieException;
 import com.example.examensarbete.Model.Movie;
 import com.example.examensarbete.Model.Series;
 import com.example.examensarbete.Model.Title;
@@ -9,14 +8,11 @@ import com.example.examensarbete.Repositories.SeriesRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class RapidApiMethods {
     public String MOVIE = "MOVIE";

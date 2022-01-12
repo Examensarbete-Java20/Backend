@@ -104,4 +104,8 @@ public class MovieService {
 
         return output;
     }
+
+    public Movie getById(String id) {
+        return movieRepository.getByID(id);
+    }
 }

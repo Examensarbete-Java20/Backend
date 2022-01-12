@@ -34,12 +34,20 @@ public class WatchList {
         this.users.remove(user);
     }
 
+    public boolean userExistInInvite(User user) {
+        return this.invited.contains(user);
+    }
+
+    public boolean userExistInUsers(User user) {
+        return this.users.contains(user);
+    }
+
     public void inviteUser(User user) {
         this.invited.add(user);
     }
 
-    public void removeInvite(String username) {
-        this.invited.remove(username);
+    public void removeInvite(User user) {
+        this.invited.remove(user);
     }
 
     public void addMovie(Movie movie) {
@@ -50,11 +58,19 @@ public class WatchList {
         this.movies.remove(movie);
     }
 
+    public boolean movieExist(Movie movie) {
+        return this.movies.contains(movie);
+    }
+
     public void addSeries(Series series) {
         this.series.add(series);
     }
 
     public void removeSeries(Series series) {
         this.series.remove(series);
+    }
+
+    public boolean seriesExist(Series series) {
+        return this.series.contains(series);
     }
 }

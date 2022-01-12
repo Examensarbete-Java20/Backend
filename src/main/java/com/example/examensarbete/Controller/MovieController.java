@@ -80,4 +80,9 @@ public class MovieController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
+
+    @GetMapping("/getByIdBruw/{id}")
+    public ResponseEntity<?> getThatone (@PathVariable String id){
+        return ResponseEntity.ok(movieService.getById(id));
+    }
 }

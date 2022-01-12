@@ -1,6 +1,7 @@
 package com.example.examensarbete.Service;
 
 import com.example.examensarbete.Exception.SeriesException;
+import com.example.examensarbete.Model.Movie;
 import com.example.examensarbete.Model.Series;
 import com.example.examensarbete.Model.Title;
 import com.example.examensarbete.Repositories.SeriesRepository;
@@ -102,6 +103,11 @@ public class SeriesService {
         }
 
         return output;
+    }
+
+
+    public Series getById(String id) {
+        return seriesRepository.getByID(id);
     }
 
 }

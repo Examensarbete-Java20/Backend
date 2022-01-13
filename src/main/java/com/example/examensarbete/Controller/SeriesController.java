@@ -41,8 +41,26 @@ public class SeriesController {
         }
     }
 
+    @GetMapping("/all/{imdb_id}")
+    public ResponseEntity<?> fetchSeries(@PathVariable String imdb_id){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(seriesService.fetchTitle(imdb_id));
+        } catch (SeriesException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
 
-    @GetMapping("/getmovie/{imdb_id}")
+    @GetMapping("/all/{imdb_id}/{counter}")
+    public ResponseEntity<?> getFiveSeries(@PathVariable String imdb_id, @PathVariable int counter){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(seriesService.getFiveSeries(imdb_id, counter));
+        } catch (SeriesException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+
+    @GetMapping("/getseries/{imdb_id}")
     public ResponseEntity<?> getSeriesFromDB(@PathVariable String imdb_id){
         try {
             return ResponseEntity.ok(seriesService.getSeriesByImdbId(imdb_id));
@@ -77,6 +95,11 @@ public class SeriesController {
         } catch (SeriesException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
+    }
+
+    @GetMapping("/getByIdBruw/{id}")
+    public ResponseEntity<?> getThatone (@PathVariable String id){
+        return ResponseEntity.ok(seriesService.getById(id));
     }
     }
 

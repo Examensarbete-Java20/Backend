@@ -5,14 +5,10 @@ import com.example.examensarbete.Model.Movie;
 import com.example.examensarbete.Model.Series;
 import com.example.examensarbete.Model.Title;
 import com.example.examensarbete.Repositories.SeriesRepository;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -79,4 +75,40 @@ public class SeriesService {
         return temp.stream().limit(10).collect(Collectors.toList());
     }
 
+    public List<Series> fetchTitle(String title){
+        List<Series> output = new ArrayList<>();
+        List<Title> seriesResult = rapid.getTitles(title, rapidApiKey, rapid.SERIES);
+
+        seriesResult.forEach(serie -> {
+            Series tempSeries = rapid.getSeriesByImdbId(serie.getImdb_id(), rapidApiKey, seriesRepository);
+            if (tempSeries != null)
+                output.add(tempSeries);
+        });
+
+        return output;
+    }
+
+
+    public List<Series> getFiveSeries(String title, int counter){
+        List<Series> output = new ArrayList<>();
+        List<Title> seriesResult = rapid.getTitles(title, rapidApiKey, rapid.SERIES);
+
+        if (counter >= 0 && counter <= seriesResult.size() - 1)
+        for (int i = counter; i < counter + 5; i++){
+            if (i <= seriesResult.size() - 1) {
+                Series tempSeries = rapid.getSeriesByImdbId(seriesResult.get(i).getImdb_id(), rapidApiKey, seriesRepository);
+                if (tempSeries != null)
+                    output.add(tempSeries);
+            }
+        }
+
+        return output;
+    }
+
+
+    public Series getById(String id) {
+        return seriesRepository.getByID(id);
+    }
+
 }
+

@@ -1,5 +1,6 @@
 package com.example.examensarbete.Controller;
 
+import com.example.examensarbete.Exception.SeriesException;
 import com.example.examensarbete.Model.Movie;
 import com.example.examensarbete.Service.MovieService;
 import com.example.examensarbete.Exception.MovieException;
@@ -36,6 +37,24 @@ public class MovieController {
         }
     }
 
+    @GetMapping("/all/{imdb_id}")
+    public ResponseEntity<?> fetchMovie(@PathVariable String imdb_id){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchTitle(imdb_id));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @GetMapping("/all/{imdb_id}/{counter}")
+    public ResponseEntity<?> getFiveMovies(@PathVariable String imdb_id, @PathVariable int counter){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(movieService.getFiveMovies(imdb_id, counter));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
     @PostMapping()
     public ResponseEntity<?> saveMovieToDB(@RequestBody Movie movie){
         try {
@@ -60,5 +79,10 @@ public class MovieController {
         } catch (MovieException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
+    }
+
+    @GetMapping("/getByIdBruw/{id}")
+    public ResponseEntity<?> getThatone (@PathVariable String id){
+        return ResponseEntity.ok(movieService.getById(id));
     }
 }

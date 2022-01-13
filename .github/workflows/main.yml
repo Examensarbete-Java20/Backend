@@ -18,6 +18,6 @@ jobs:
           heroku_email: ${{secrets.HEROKU_MAIL}}
 
         #kör skriptet en gång och när det funkar kommentera bort variablerna
-        env:
-
-          HD_spring.rapid.api-key: ${{secrets.RAPID_API_KEY}}
+#        env:
+#
+#          HD_spring.rapid.api-key: ${{secrets.RAPID_API_KEY}}

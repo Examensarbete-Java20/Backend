@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 public class MovieAndSeriesService {
     @Value("${RAPID_API_KEY}")
-    private String rapidApiKey;
+    private static String rapidApiKey;
 
     @Autowired
     private MovieRepository movieRepository;
@@ -51,5 +51,9 @@ public class MovieAndSeriesService {
         });
 
         return output;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(rapidApiKey);
     }
 }

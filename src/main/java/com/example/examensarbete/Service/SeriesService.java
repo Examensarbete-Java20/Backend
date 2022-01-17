@@ -57,9 +57,29 @@ public class SeriesService {
         return seriesRepository.save(series);
     }
 
-    public Series updateSeriesRating(Series series, int rating) {
-        series.setTotalRating(series.getTotalRating() + rating);
-        series.setTotalOfVoters(series.getTotalOfVoters() + 1);
+    public Series updateSeriesRating(Series series, String googleId, int rating) {
+        int oldRating = 0;
+        int addVote = 1;
+        String vote = googleId + ", " + rating;
+        if (series.getVoters() == null){
+            List<String> list = new ArrayList<>();
+            list.add(vote);
+            series.setVoters(list);
+        } else {
+            for (String s: series.getVoters()) {
+                if (s.contains(googleId)) {
+                    oldRating = Integer.parseInt(s.substring(s.indexOf(" ")+1));
+                    addVote = 0;
+                    series.getVoters().remove(s);
+                    series.getVoters().add(vote);
+                    break;
+                }
+            }
+        }
+
+
+        series.setTotalRating(series.getTotalRating() + rating - oldRating);
+        series.setTotalOfVoters(series.getTotalOfVoters() + addVote);
         if (!series.isExist())
             series.setExist(true);
 

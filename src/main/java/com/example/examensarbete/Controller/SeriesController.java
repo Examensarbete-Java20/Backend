@@ -79,10 +79,10 @@ public class SeriesController {
         }
 
     }
-    @PostMapping("/update/{rating}")
-    public ResponseEntity<?> updateSeries(@RequestBody Series series, @PathVariable int rating){
+    @PostMapping("/update/{googleId}/{rating}")
+    public ResponseEntity<?> updateSeries(@RequestBody Series series, @PathVariable String googleId, @PathVariable int rating){
         try {
-            return ResponseEntity.ok(seriesService.updateSeriesRating(series,rating));
+            return ResponseEntity.ok(seriesService.updateSeriesRating(series, googleId, rating));
         } catch (SeriesException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }

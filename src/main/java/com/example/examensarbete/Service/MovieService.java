@@ -56,16 +56,34 @@ public class MovieService {
         return movieRepository.save(movie);
     }
 
-    public Movie updateMovieRating(Movie movie, int rating) {
-        movie.setTotalRating(movie.getTotalRating() + rating);
-        movie.setTotalOfVoters(movie.getTotalOfVoters() + 1);
+    public Movie updateMovieRating(Movie movie, String googleId, int rating) {
+        int oldRating = 0;
+        int addVote = 1;
+        String vote = googleId + ", " + rating;
+        if (movie.getVoters() == null){
+            List<String> list = new ArrayList<>();
+            list.add(vote);
+            movie.setVoters(list);
+        } else {
+            for (String s: movie.getVoters()) {
+                if (s.contains(googleId)) {
+                    oldRating = Integer.parseInt(s.substring(s.indexOf(" ")+1));
+                    addVote = 0;
+                    movie.getVoters().remove(s);
+                    movie.getVoters().add(vote);
+                    break;
+                }
+            }
+        }
+
+
+        movie.setTotalRating(movie.getTotalRating() + rating - oldRating);
+        movie.setTotalOfVoters(movie.getTotalOfVoters() + addVote);
         if (!movie.isExist())
             movie.setExist(true);
 
         movie.setOwnRating(movie.getTotalRating() / movie.getTotalOfVoters());
-        System.out.println(movie);
         return movieRepository.save(movie);
-
     }
 
     public List<Movie> getTopTen() {

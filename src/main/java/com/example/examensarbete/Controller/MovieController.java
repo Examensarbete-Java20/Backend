@@ -64,10 +64,10 @@ public class MovieController {
         }
 
     }
-    @PostMapping("/update/{rating}")
-    public ResponseEntity<?> updateMovie(@RequestBody Movie movie, @PathVariable int rating){
+    @PostMapping("/update/{googleId}/{rating}")
+    public ResponseEntity<?> updateMovie(@RequestBody Movie movie, @PathVariable String googleId, @PathVariable int rating){
         try {
-            return ResponseEntity.ok(movieService.updateMovieRating(movie,rating));
+            return ResponseEntity.ok(movieService.updateMovieRating(movie, googleId, rating));
         } catch (MovieException exception) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }

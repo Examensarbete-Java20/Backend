@@ -7,6 +7,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 
+import java.util.List;
+
 
 @Data
 @AllArgsConstructor
@@ -25,6 +27,7 @@ public class Series {
     private double ownRating;
     private double totalOfVoters;
     private double totalRating;
+    private List<String> voters;
 
     private int year;
     private double movie_length;

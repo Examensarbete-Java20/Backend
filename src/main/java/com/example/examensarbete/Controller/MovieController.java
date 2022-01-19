@@ -1,58 +1,88 @@
 package com.example.examensarbete.Controller;
 
-import com.example.examensarbete.Model.Title;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.examensarbete.Exception.SeriesException;
+import com.example.examensarbete.Model.Movie;
+import com.example.examensarbete.Service.MovieService;
+import com.example.examensarbete.Exception.MovieException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@CrossOrigin
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(path = "/movie")
 public class MovieController {
-    RestTemplate rt = new RestTemplate();
-    ObjectMapper om = new ObjectMapper();
 
+    @Autowired
+    private MovieService movieService;
 
-    @GetMapping("/{title}")
-    public List<Title> getID(@PathVariable String title){
+    @GetMapping("/title/{title}")
+    public ResponseEntity<?> getID(@PathVariable String title){
+        try{
+            return ResponseEntity.status(HttpStatus.OK).body(movieService.getTitles(title));
+        }
+        catch(MovieException exception){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
 
-
-        String jsonDto = title;
-        List<Title> output = new ArrayList<>();
-
-
-        String url = "https://data-imdb1.p.rapidapi.com/movie/imdb_id/byTitle/" + jsonDto + "/";
-        HttpMethod method = HttpMethod.GET;
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("x-rapidapi-key", "hej");
-        headers.add("x-rapidapi-host", "data-imdb1.p.rapidapi.com");
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        HttpEntity<String> entity = new HttpEntity<>(jsonDto, headers);
+    @GetMapping("/{imdb_id}")
+    public ResponseEntity<?> getMovie(@PathVariable String imdb_id){
         try {
-            ResponseEntity<String> result = rt.exchange(url, method, entity, String.class);
-            if (result.getStatusCode().is2xxSuccessful()) {
-                List<Title> utput = om.readValue(result.getBody().substring(11, result.getBody().length()-1), new TypeReference<>() {});
-                output.add(utput.get(0));
-                output.add(utput.get(1));
-                output.add(utput.get(2));
-                output.add(utput.get(3));
-                output.add(utput.get(4));
+            return ResponseEntity.status(HttpStatus.OK).body(movieService.getMovieByImdbId(imdb_id));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
 
-            }
-        } catch (Exception e){
-            System.out.println("CONNECTION FAIL");
+    @GetMapping("/all/{imdb_id}")
+    public ResponseEntity<?> fetchMovie(@PathVariable String imdb_id){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchTitle(imdb_id));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @GetMapping("/all/{imdb_id}/{counter}")
+    public ResponseEntity<?> getFiveMovies(@PathVariable String imdb_id, @PathVariable int counter){
+        try {
+            return ResponseEntity.status(HttpStatus.OK).body(movieService.getFiveMovies(imdb_id, counter));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> saveMovieToDB(@RequestBody Movie movie){
+        try {
+            return ResponseEntity.ok(movieService.saveMovie(movie));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
 
-        return output;
+    }
+    @PostMapping("/update/{googleId}/{rating}")
+    public ResponseEntity<?> updateMovie(@RequestBody Movie movie, @PathVariable String googleId, @PathVariable int rating){
+        try {
+            return ResponseEntity.ok(movieService.updateMovieRating(movie, googleId, rating));
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+    @GetMapping("/topTen")
+    public ResponseEntity<?> getTopTen(){
+        try {
+            return ResponseEntity.ok(movieService.getTopTen());
+        } catch (MovieException exception) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
+        }
+    }
+
+    @GetMapping("/getByIdBruw/{id}")
+    public ResponseEntity<?> getThatone (@PathVariable String id){
+        return ResponseEntity.ok(movieService.getById(id));
     }
 }

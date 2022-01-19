@@ -7,6 +7,7 @@ import com.example.examensarbete.Repositories.SeriesRepository;
 import com.example.examensarbete.Repositories.UserRepository;
 import com.example.examensarbete.Repositories.WatchListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -52,10 +53,13 @@ public class WatchlistService {
         return output;
     }
 
-    public WatchList addContentToWatchList(Content content, String listId) {
+    public WatchList addMovieToWatchList(Movie movie, String listId) {
         WatchList list = watchListRepository.getByID(listId);
-        Movie movieToSave = movieRepository.getByImdbId(content.getImdbId());
+        System.out.println(list.getContent());
+
+        Movie movieToSave = movieRepository.getByImdbId(movie.getImdbId());
         if (movieToSave == null)
+            movieToSave = movieRepository.save(movie);
 
         if (list == null) {
             System.out.println("listan är null");
@@ -68,8 +72,32 @@ public class WatchlistService {
             // TODO: bättre response
             return null;
         }
-
         list.addContent(movieToSave);
+        System.out.println(list.getContent());
+
+        return watchListRepository.save(list);
+    }
+
+
+    public WatchList addSeriesToWatchList(Series series, String listId) {
+        WatchList list = watchListRepository.getByID(listId);
+        Series seriesToSave = seriesRepository.getByImdbId(series.getImdbId());
+        if (seriesToSave == null)
+            seriesToSave = seriesRepository.save(series);
+
+        if (list == null) {
+            System.out.println("listan är null");
+            // TODO: bättre response
+            return null;
+        }
+
+        if (list.contentExist(seriesToSave)) {
+            System.out.println("den finns");
+            // TODO: bättre response
+            return null;
+        }
+
+        list.addContent(seriesToSave);
 
         return watchListRepository.save(list);
     }
@@ -92,8 +120,8 @@ public class WatchlistService {
         list.removeContent(content);
 
         return watchListRepository.save(list);
-
     }
+
 
     public WatchList inviteUserToWatchList(String username, String listId) {
         User user = userRepository.getByUsername(username);

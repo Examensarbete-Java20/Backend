@@ -28,13 +28,18 @@ public class WatchListController {
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.getWatchListByGoogleId(googleId));
     }
 
-    @PostMapping("/content/{listId}")
-    public ResponseEntity<?> addContentToWatchList(@RequestBody Content content, @PathVariable String listId){
-        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.addContentToWatchList(content,listId));
+    @PostMapping("/movie/{listId}")
+    public ResponseEntity<?> addMovieToWatchList(@RequestBody Movie movie, @PathVariable String listId){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.addMovieToWatchList(movie,listId));
+    }
+
+    @PostMapping("/series/{listId}")
+    public ResponseEntity<?> addMovieToWatchList(@RequestBody Series series, @PathVariable String listId){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.addSeriesToWatchList(series,listId));
     }
 
     @DeleteMapping("/content/{listId}")
-    public ResponseEntity<?> removeContentFromWatchList(@RequestBody Content content, @PathVariable String listId){
+    public ResponseEntity<?> removeMovieFromWatchList(@RequestBody Content content, @PathVariable String listId){
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.removeContentFromWatchList(content,listId));
     }
 

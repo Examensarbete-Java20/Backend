@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,11 +20,11 @@ public class WatchList {
     @DocumentReference
     private User user;
     @DocumentReference
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
     @DocumentReference
-    private List<User> invited;
-    @DocumentReference
-    private List<Content> content;
+    private List<User> invited = new ArrayList<>();
+    @DBRef
+    private List<Content> content = new ArrayList();
 
 
     public void addUser(User user) {
@@ -49,8 +51,8 @@ public class WatchList {
         this.invited.remove(user);
     }
 
-    public void addContent(Content content) {
-        this.content.add(content);
+    public void addContent(Content newContent) {
+        this.content.add(newContent);
     }
 
     public void removeContent(Content content) {

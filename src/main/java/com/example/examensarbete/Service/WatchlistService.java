@@ -7,7 +7,6 @@ import com.example.examensarbete.Repositories.SeriesRepository;
 import com.example.examensarbete.Repositories.UserRepository;
 import com.example.examensarbete.Repositories.WatchListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -55,7 +54,6 @@ public class WatchlistService {
 
     public WatchList addMovieToWatchList(Movie movie, String listId) {
         WatchList list = watchListRepository.getByID(listId);
-        System.out.println(list.getContent());
 
         Movie movieToSave = movieRepository.getByImdbId(movie.getImdbId());
         if (movieToSave == null)
@@ -73,7 +71,6 @@ public class WatchlistService {
             return null;
         }
         list.addContent(movieToSave);
-        System.out.println(list.getContent());
 
         return watchListRepository.save(list);
     }

@@ -4,8 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -18,13 +20,12 @@ public class WatchList {
     @DocumentReference
     private User user;
     @DocumentReference
-    private List<User> users;
+    private List<User> users = new ArrayList<>();
     @DocumentReference
-    private List<User> invited;
-    @DocumentReference
-    private List<Movie> movies;
-    @DocumentReference
-    private List<Series> series;
+    private List<User> invited = new ArrayList<>();
+    @DBRef
+    private List<Content> content = new ArrayList();
+
 
     public void addUser(User user) {
         this.users.add(user);
@@ -50,27 +51,16 @@ public class WatchList {
         this.invited.remove(user);
     }
 
-    public void addMovie(Movie movie) {
-        this.movies.add(movie);
+    public void addContent(Content newContent) {
+        this.content.add(newContent);
     }
 
-    public void removeMovie(Movie movie) {
-        this.movies.remove(movie);
+    public void removeContent(Content content) {
+        this.content.remove(content);
     }
 
-    public boolean movieExist(Movie movie) {
-        return this.movies.contains(movie);
+    public boolean contentExist(Content content) {
+        return this.content.contains(content);
     }
 
-    public void addSeries(Series series) {
-        this.series.add(series);
-    }
-
-    public void removeSeries(Series series) {
-        this.series.remove(series);
-    }
-
-    public boolean seriesExist(Series series) {
-        return this.series.contains(series);
-    }
 }

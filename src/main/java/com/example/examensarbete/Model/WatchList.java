@@ -22,9 +22,8 @@ public class WatchList {
     @DocumentReference
     private List<User> invited;
     @DocumentReference
-    private List<Movie> movies;
-    @DocumentReference
-    private List<Series> series;
+    private List<Content> content;
+
 
     public void addUser(User user) {
         this.users.add(user);
@@ -50,27 +49,16 @@ public class WatchList {
         this.invited.remove(user);
     }
 
-    public void addMovie(Movie movie) {
-        this.movies.add(movie);
+    public void addContent(Content content) {
+        this.content.add(content);
     }
 
-    public void removeMovie(Movie movie) {
-        this.movies.remove(movie);
+    public void removeContent(Content content) {
+        this.content.remove(content);
     }
 
-    public boolean movieExist(Movie movie) {
-        return this.movies.contains(movie);
+    public boolean contentExist(Content content) {
+        return this.content.contains(content);
     }
 
-    public void addSeries(Series series) {
-        this.series.add(series);
-    }
-
-    public void removeSeries(Series series) {
-        this.series.remove(series);
-    }
-
-    public boolean seriesExist(Series series) {
-        return this.series.contains(series);
-    }
 }

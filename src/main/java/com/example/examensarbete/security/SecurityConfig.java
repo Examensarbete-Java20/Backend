@@ -2,15 +2,12 @@ package com.example.examensarbete.security;
 
 import com.example.examensarbete.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static com.example.examensarbete.Model.Role.RoleConstant.*;
@@ -39,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService((username) -> (UserDetails) userRepository.getByGoogleId(username)
+        auth.userDetailsService((username) -> userRepository.getByGoogleId(username)
                 .orElseThrow(() -> new UsernameNotFoundException("user not found")))
                 .passwordEncoder(passwordEncoder);
     }
@@ -62,7 +59,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                // .antMatchers("/admin/**").hasRole(ADMIN.name())
                 .antMatchers("/user/**").hasRole(USER.name())
                 .antMatchers("/movie/**").permitAll()
+                .antMatchers("/movie/update/**").hasRole(USER.name())
                 .antMatchers("/series/**").permitAll()
+                .antMatchers("/series/update/**").hasRole(USER.name())
                // .antMatchers("/public/getUser").hasAnyRole(USER.name(), ADMIN.name(),SUPER_ADMIN.name())
                 .antMatchers("/**").hasRole(SUPER_ADMIN.name())
                 .anyRequest().authenticated()
@@ -71,10 +70,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(authenticationFilter, JWTAuthorizationFilter.class)
                 .addFilter(jwtAuthorizationFilter)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoderBean() {
-        return new BCryptPasswordEncoder();
     }
 }

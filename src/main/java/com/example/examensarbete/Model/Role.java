@@ -2,20 +2,16 @@ package com.example.examensarbete.Model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.annotation.Id;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 
-import static javax.persistence.GenerationType.AUTO;
-
-@Entity
+@Document
 @NoArgsConstructor
 @Data
 public class Role {
 
     @Id
-    @GeneratedValue(strategy = AUTO)
     private String id;
 
     private RoleConstant name;

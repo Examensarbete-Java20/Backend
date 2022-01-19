@@ -5,7 +5,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.time.Duration;
@@ -16,7 +15,6 @@ import java.util.stream.Collectors;
 /**
  * Handles the logic in JWT
  */
-@Component
 @Slf4j
 public class JWTIssuer {
 
@@ -61,4 +59,5 @@ public class JWTIssuer {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
 }

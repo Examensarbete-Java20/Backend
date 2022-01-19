@@ -21,11 +21,11 @@ public class UserService {
     }
 
     public User loginUser(String googleId) {
-        return userRepository.getByGoogleId(googleId);
+        return userRepository.getByGoogleId(googleId).get();
     }
 
     public User changeUsername(String googleId, String newUsername) {
-        User user = userRepository.getByGoogleId(googleId);
+        User user = userRepository.getByGoogleId(googleId).get();
         if (user == null)
             throw new UserException("User with that googleId doesn't exist");
         user.setUsername(newUsername);

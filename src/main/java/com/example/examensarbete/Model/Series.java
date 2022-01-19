@@ -10,35 +10,7 @@ import org.springframework.data.annotation.Id;
 import java.util.List;
 
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Series {
+public class Series extends Content {
 
-    @Id
-    private String ID;
-
-    @JsonProperty("imdb_id")
-    private String imdbId;
-
-    private double rating;
-
-    private double ownRating;
-    private double totalOfVoters;
-    private double totalRating;
-    private List<String> voters;
-
-    private int year;
-    private double movie_length;
-
-    private String title;
-    private String description;
-    private String plot;
-    private String trailer;
-    private String release;
-    private String image_url;
-    private String banner;
-    // exist för frontend ifall serien finns i db eller inte
-    private boolean exist;
 }

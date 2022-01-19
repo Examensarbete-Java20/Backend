@@ -1,10 +1,7 @@
 package com.example.examensarbete.Service;
 
 import com.example.examensarbete.Exception.UserException;
-import com.example.examensarbete.Model.Movie;
-import com.example.examensarbete.Model.Series;
-import com.example.examensarbete.Model.User;
-import com.example.examensarbete.Model.WatchList;
+import com.example.examensarbete.Model.*;
 import com.example.examensarbete.Repositories.MovieRepository;
 import com.example.examensarbete.Repositories.SeriesRepository;
 import com.example.examensarbete.Repositories.UserRepository;
@@ -57,6 +54,7 @@ public class WatchlistService {
 
     public WatchList addMovieToWatchList(Movie movie, String listId) {
         WatchList list = watchListRepository.getByID(listId);
+
         Movie movieToSave = movieRepository.getByImdbId(movie.getImdbId());
         if (movieToSave == null)
             movieToSave = movieRepository.save(movie);
@@ -67,37 +65,16 @@ public class WatchlistService {
             return null;
         }
 
-        if (list.movieExist(movieToSave)) {
+        if (list.contentExist(movieToSave)) {
             System.out.println("den finns");
             // TODO: bättre response
             return null;
         }
-
-        list.addMovie(movieToSave);
+        list.addContent(movieToSave);
 
         return watchListRepository.save(list);
     }
 
-    public WatchList removeMovieFromWatchList(Movie movie, String listId) {
-        WatchList list = watchListRepository.getByID(listId);
-
-        if (list == null) {
-            System.out.println("listan är null");
-            // TODO: bättre response
-            return null;
-        }
-
-        if (!list.movieExist(movie)) {
-            System.out.println("den finns inte");
-            // TODO: bättre response
-            return null;
-        }
-
-        list.removeMovie(movie);
-
-        return watchListRepository.save(list);
-
-    }
 
     public WatchList addSeriesToWatchList(Series series, String listId) {
         WatchList list = watchListRepository.getByID(listId);
@@ -111,18 +88,18 @@ public class WatchlistService {
             return null;
         }
 
-        if (list.seriesExist(seriesToSave)) {
+        if (list.contentExist(seriesToSave)) {
             System.out.println("den finns");
             // TODO: bättre response
             return null;
         }
 
-        list.addSeries(seriesToSave);
+        list.addContent(seriesToSave);
 
         return watchListRepository.save(list);
     }
 
-    public WatchList removeSeriesFromWatchList(Series series, String listId) {
+    public WatchList removeContentFromWatchList(Content content, String listId) {
         WatchList list = watchListRepository.getByID(listId);
 
         if (list == null) {
@@ -131,16 +108,17 @@ public class WatchlistService {
             return null;
         }
 
-        if (!list.seriesExist(series)) {
+        if (!list.contentExist(content)) {
             System.out.println("den finns inte");
             // TODO: bättre response
             return null;
         }
 
-        list.removeSeries(series);
+        list.removeContent(content);
 
         return watchListRepository.save(list);
     }
+
 
     public WatchList inviteUserToWatchList(String username, String listId) {
         User user = userRepository.getByUsername(username);

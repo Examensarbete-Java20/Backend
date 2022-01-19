@@ -1,9 +1,6 @@
 package com.example.examensarbete.Controller;
 
-import com.example.examensarbete.Model.Movie;
-import com.example.examensarbete.Model.Series;
-import com.example.examensarbete.Model.User;
-import com.example.examensarbete.Model.WatchList;
+import com.example.examensarbete.Model.*;
 import com.example.examensarbete.Service.WatchlistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +19,7 @@ public class WatchListController {
     // TODO : Fixa bättre returns xD
 
     @PostMapping()
-    public ResponseEntity<?> createUser(@RequestBody WatchList watchList){
+    public ResponseEntity<?> createWatchList(@RequestBody WatchList watchList){
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.createList(watchList));
     }
 
@@ -36,19 +33,14 @@ public class WatchListController {
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.addMovieToWatchList(movie,listId));
     }
 
-    @DeleteMapping("/movie/{listId}")
-    public ResponseEntity<?> removeMovieFromWatchList(@RequestBody Movie movie, @PathVariable String listId){
-        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.removeMovieFromWatchList(movie,listId));
-    }
-
     @PostMapping("/series/{listId}")
     public ResponseEntity<?> addMovieToWatchList(@RequestBody Series series, @PathVariable String listId){
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.addSeriesToWatchList(series,listId));
     }
 
-    @DeleteMapping("/series/{listId}")
-    public ResponseEntity<?> removeMovieFromWatchList(@RequestBody Series series, @PathVariable String listId){
-        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.removeSeriesFromWatchList(series,listId));
+    @DeleteMapping("/content/{listId}")
+    public ResponseEntity<?> removeMovieFromWatchList(@RequestBody Content content, @PathVariable String listId){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.removeContentFromWatchList(content,listId));
     }
 
     @PostMapping("/list/{listId}/{username}")

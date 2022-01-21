@@ -36,6 +36,10 @@ public class WatchlistService {
         return watchListRepository.save(watchList);
     }
 
+    public WatchList getWatchListById(String id){
+        return watchListRepository.getByID(id);
+    }
+
     public List<WatchList> getWatchListByGoogleId(String googleId) {
         // TODO: Förbättra på något sätt
         List<WatchList> output = new ArrayList<>();

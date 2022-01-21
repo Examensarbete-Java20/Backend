@@ -28,6 +28,12 @@ public class WatchListController {
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.getWatchListByGoogleId(googleId));
     }
 
+    @GetMapping("/single/{Id}")
+    public ResponseEntity<?> getWatchListById(@PathVariable String Id){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.getWatchListById(Id));
+    }
+
+
     @PostMapping("/movie/{listId}")
     public ResponseEntity<?> addMovieToWatchList(@RequestBody Movie movie, @PathVariable String listId){
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.addMovieToWatchList(movie,listId));
@@ -38,7 +44,7 @@ public class WatchListController {
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.addSeriesToWatchList(series,listId));
     }
 
-    @DeleteMapping("/content/{listId}")
+    @PostMapping("/content/{listId}")
     public ResponseEntity<?> removeMovieFromWatchList(@RequestBody Content content, @PathVariable String listId){
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.removeContentFromWatchList(content,listId));
     }

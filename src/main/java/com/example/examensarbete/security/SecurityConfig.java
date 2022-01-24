@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/series/**").permitAll()
                 .antMatchers("/series/update/**").hasRole(USER.name())
                // .antMatchers("/public/getUser").hasAnyRole(USER.name(), ADMIN.name(),SUPER_ADMIN.name())
-                .antMatchers("/**").hasRole(SUPER_ADMIN.name())
+               // .antMatchers("/**").hasRole(SUPER_ADMIN.name())
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(corsFilter, CustomAuthenticationFilter.class)

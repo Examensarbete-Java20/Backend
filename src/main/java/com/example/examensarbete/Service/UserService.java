@@ -31,6 +31,10 @@ public class UserService {
         return userRepository.getByGoogleId(googleId).get();
     }
 
+    public User getById(String id) {
+        return userRepository.findByID(id).get();
+    }
+
     public User changeUsername(String googleId, String newUsername) {
         User user = userRepository.getByGoogleId(googleId).get();
         if (user == null)

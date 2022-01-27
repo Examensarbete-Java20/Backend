@@ -3,14 +3,9 @@ package com.example.examensarbete.security;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
+import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import javax.servlet.*;
 
 @Component
 public class CORSFilter implements Filter {

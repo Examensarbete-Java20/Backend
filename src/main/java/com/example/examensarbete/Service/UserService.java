@@ -19,7 +19,6 @@ public class UserService {
     private RoleRepository roleRepository;
 
     public User createUser(User user) {
-
         user.addDefaultRole(roleRepository);
         if (userRepository.existsByUsername(user.getUsername()) || userRepository.existsByEmail(user.getEmail()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Username or email taken");
@@ -28,7 +27,7 @@ public class UserService {
     }
 
     public User loginUser(String googleId) {
-        return userRepository.getByGoogleId(googleId).get();
+        return userRepository.getByGoogleId(googleId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "No account found"));
     }
 
     public User getById(String id) {

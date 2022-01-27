@@ -21,8 +21,6 @@ public class MovieService {
     private String rapidApiKey;
 
     private RapidApiMethods rapid = new RapidApiMethods();
-    private RestTemplate restTemplate = new RestTemplate();
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private MovieRepository movieRepository;

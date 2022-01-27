@@ -1,5 +1,6 @@
 package com.example.examensarbete;
 
+import com.example.examensarbete.Model.Role;
 import com.example.examensarbete.Model.User;
 import com.example.examensarbete.Repositories.RoleRepository;
 import com.example.examensarbete.Repositories.UserRepository;
@@ -20,14 +21,16 @@ public class ExamensarbeteApplication {
     @Bean
     public CommandLineRunner clr (UserRepository userRepository, RoleRepository roleRepository) {
         return (args -> {
-            User user = new User();
 
-            user.addRoleToUser("SUPER_ADMIN", roleRepository);
-            user.addRoleToUser("ADMIN", roleRepository);
-            user.addRoleToUser("USER", roleRepository);
+            saveRoleIfNotPresent(roleRepository, Role.RoleConstant.SUPER_ADMIN);
+            saveRoleIfNotPresent(roleRepository, Role.RoleConstant.ADMIN);
+            saveRoleIfNotPresent(roleRepository, Role.RoleConstant.USER);
 
-            User savedUser = userRepository.save(user);
-            log.info("User added to the application {}", savedUser);
         });
+    }
+    private void saveRoleIfNotPresent(RoleRepository roleRepository, Role.RoleConstant role) {
+        if (!roleRepository.existsByName(role)) {
+            roleRepository.save(new Role(role));
+        }
     }
 }

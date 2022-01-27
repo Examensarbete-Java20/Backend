@@ -50,22 +50,22 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 
     public void addDefaultRole(RoleRepository roleRepository) {
@@ -82,11 +82,11 @@ public class User implements UserDetails {
 
     }
 
-    public void addRoleToUser(String roleName, RoleRepository roleRepository) {
+    public void addRoleToUser(Role.RoleConstant roleName, RoleRepository roleRepository) {
         if(this.roleList == null) {
             this.roleList = new ArrayList<>();
         }
-        Role saveRole = roleRepository.save(new Role(valueOf(roleName)));
-        this.roleList.add(saveRole);
+        Role role = roleRepository.findByName(roleName).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Role doesnt exist"));
+        this.roleList.add(role);
     }
 }

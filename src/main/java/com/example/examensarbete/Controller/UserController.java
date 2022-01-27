@@ -1,8 +1,9 @@
 package com.example.examensarbete.Controller;
 
 import com.example.examensarbete.Exception.UserException;
-import com.example.examensarbete.Model.User;
+import com.example.examensarbete.Model.*;
 import com.example.examensarbete.Service.UserService;
+import com.example.examensarbete.Service.WatchlistService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,22 +20,60 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private WatchlistService watchlistService;
 
-    @PostMapping()
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        log.info(String.valueOf(user));
-        System.out.println("user: " + user);
-        return ResponseEntity.status(HttpStatus.OK).body(userService.createUser(user));
+    /**
+     * Methods for watchlists
+     */
+
+    @PostMapping("/watchlist")
+    public ResponseEntity<?> createWatchList(@RequestBody WatchList watchList){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.createList(watchList));
     }
+
+    @GetMapping("/watchlist/{googleId}")
+    public ResponseEntity<?> getWatchListByGoogleId(@PathVariable String googleId){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.getWatchListByGoogleId(googleId));
+    }
+
+    @PostMapping("/watchlist/movie/{listId}")
+    public ResponseEntity<?> addMovieToWatchList(@RequestBody Movie movie, @PathVariable String listId){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.addMovieToWatchList(movie,listId));
+    }
+
+    @PostMapping("/watchlist/series/{listId}")
+    public ResponseEntity<?> addMovieToWatchList(@RequestBody Series series, @PathVariable String listId){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.addSeriesToWatchList(series,listId));
+    }
+
+    @DeleteMapping("/watchlist/content/{listId}")
+    public ResponseEntity<?> removeMovieFromWatchList(@RequestBody Content content, @PathVariable String listId){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.removeContentFromWatchList(content,listId));
+    }
+
+    @PostMapping("/watchlist/list/{listId}/{username}")
+    public ResponseEntity<?> inviteUserToList(@PathVariable String username, @PathVariable String listId){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.inviteUserToWatchList(username,listId));
+    }
+
+    @DeleteMapping("/watchlist/list/{listId}/{username}")
+    public ResponseEntity<?> removeUserFromInviteInWatchList(@PathVariable String username, @PathVariable String listId){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.removeUserFromInviteInWatchList(username,listId));
+    }
+
+    @PutMapping("/watchlist/list/{listId}")
+    public ResponseEntity<?> acceptInviteToList(@RequestBody User user, @PathVariable String listId){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.acceptInviteToList(user,listId));
+    }
+
+    /**
+     * Methods for user
+     */
 
     @GetMapping("/{googleId}")
     public ResponseEntity<?> getUserByGoogleID(@PathVariable String googleId) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.loginUser(googleId));
-    }
-
-    @GetMapping("/test/{id}")
-    public ResponseEntity<?> getUserByID(@PathVariable String id) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getById(id));
     }
 
     @GetMapping("/{googleId}/{username}")
@@ -45,6 +84,4 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
         }
     }
-
-
 }

@@ -71,10 +71,7 @@ public class UserController {
      * Methods for user
      */
 
-    @GetMapping("/{googleId}")
-    public ResponseEntity<?> getUserByGoogleID(@PathVariable String googleId) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.loginUser(googleId));
-    }
+
 
     @GetMapping("/{googleId}/{username}")
     public ResponseEntity<?> changeUsername(@PathVariable String googleId, @PathVariable String username) {

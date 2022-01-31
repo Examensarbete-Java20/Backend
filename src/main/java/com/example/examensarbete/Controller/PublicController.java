@@ -162,6 +162,7 @@ public class PublicController {
     public ResponseEntity<?> getUserByGoogleID(@PathVariable String googleId) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.loginUser(googleId));
     }
+
     @PostMapping("/create/user")
     public ResponseEntity<?> createUser(@RequestBody User user) {
         log.info(String.valueOf(user));

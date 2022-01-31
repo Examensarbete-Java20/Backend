@@ -1,6 +1,7 @@
 package com.example.examensarbete.security;
 
 import com.example.examensarbete.Repositories.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,6 +17,7 @@ import static com.example.examensarbete.Model.Role.RoleConstant.*;
  * The configurations-class for the security
  */
 @Configuration
+@Slf4j
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JWTIssuer jwtIssuer;
@@ -36,8 +38,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService((username) -> userRepository.getByGoogleId(username)
-                .orElseThrow(() -> new UsernameNotFoundException("user not found")))
+        auth.userDetailsService((googleId) -> {
+            log.info("GoogleID: {}" , googleId);
+            return userRepository.getByGoogleId(googleId)
+                    .orElseThrow(() -> new UsernameNotFoundException("user not found"));
+        })
                 .passwordEncoder(passwordEncoder);
     }
 
@@ -56,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // mest generella antMatchers först
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/user/**").hasAnyRole(USER.name(), ADMIN.name())
+                .antMatchers("/user/**").hasRole(USER.name())//hasAnyRole(USER.name(), ADMIN.name())
                 .antMatchers("/public/**").permitAll()
                 .antMatchers("/admin/**").hasRole(ADMIN.name())
                // .antMatchers("/**").hasRole(SUPER_ADMIN.name())

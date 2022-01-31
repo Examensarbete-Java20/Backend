@@ -32,6 +32,7 @@ public class User implements UserDetails {
     private String email;
     private boolean isAdmin;
     private List<Role> roleList;
+    private String password;
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (this.roleList == null) {
@@ -45,7 +46,11 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return password;
+    }
+
+    public void setPassword(String googleId) {
+        this.password = googleId;
     }
 
     @Override

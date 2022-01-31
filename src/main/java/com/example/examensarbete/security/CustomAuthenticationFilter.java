@@ -46,7 +46,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     @Override
     public org.springframework.security.core.Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         final String username = request.getParameter("username");
-        final String password = request.getParameter("password");
+        final String password = request.getParameter("username");
         log.info("Authenticated user {}", username);
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
         return authenticationManager.authenticate(token);

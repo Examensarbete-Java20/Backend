@@ -50,6 +50,7 @@ public class RapidApiMethods {
                 if (result.getStatusCode().is2xxSuccessful() && result.getBody().length() != 14) {
                     output = objectMapper.readValue(result.getBody().substring(11, result.getBody().length() - 1), new TypeReference<>() {
                     });
+                    output.setType("movie");
                 }
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
@@ -66,9 +67,9 @@ public class RapidApiMethods {
             try {
                 ResponseEntity<String> result = restTemplate.exchange(getSeriesEndpoint(true, imdbId), HttpMethod.GET, getEntity(imdbId, rapidApiKey), String.class);
                 if (result.getStatusCode().is2xxSuccessful()) {
-                    Series tempMovie = objectMapper.readValue(result.getBody().substring(11, result.getBody().length() - 1), new TypeReference<>() {
+                    output = objectMapper.readValue(result.getBody().substring(11, result.getBody().length() - 1), new TypeReference<>() {
                     });
-                    output = tempMovie;
+                    output.setType("series");
                 }
             } catch (JsonProcessingException e) {
                 e.printStackTrace();

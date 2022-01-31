@@ -37,9 +37,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.getWatchListByGoogleId(googleId));
     }
 
-    @GetMapping("/single/{Id}")
-    public ResponseEntity<?> getWatchListById(@PathVariable String Id){
-        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.getWatchListById(Id));
+    @GetMapping("/single/{id}")
+    public ResponseEntity<?> getWatchListById(@PathVariable String id){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.getWatchListById(id));
     }
 
     @PostMapping("/watchlist/movie/{listId}")

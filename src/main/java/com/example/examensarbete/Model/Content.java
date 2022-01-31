@@ -13,6 +13,7 @@ import java.util.List;
 public class Content {
     @Id
     private String ID;
+    private String type;
 
     @JsonProperty("imdb_id")
     private String imdbId;

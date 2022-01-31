@@ -37,8 +37,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.getWatchListByGoogleId(googleId));
     }
 
+    @GetMapping("/single/{Id}")
+    public ResponseEntity<?> getWatchListById(@PathVariable String Id){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.getWatchListById(Id));
+    }
+
     @PostMapping("/watchlist/movie/{listId}")
     public ResponseEntity<?> addMovieToWatchList(@RequestBody Movie movie, @PathVariable String listId){
+        System.out.println("hej");
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.addMovieToWatchList(movie,listId));
     }
 
@@ -47,7 +53,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.addSeriesToWatchList(series,listId));
     }
 
-    @DeleteMapping("/watchlist/content/{listId}")
+    @PostMapping("/watchlist/content/{listId}")
     public ResponseEntity<?> removeMovieFromWatchList(@RequestBody Content content, @PathVariable String listId){
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.removeContentFromWatchList(content,listId));
     }
@@ -57,7 +63,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.inviteUserToWatchList(username,listId));
     }
 
-    @DeleteMapping("/watchlist/list/{listId}/{username}")
+    @PostMapping("/watchlist/list/removeUser/{listId}/{username}")
     public ResponseEntity<?> removeUserFromInviteInWatchList(@PathVariable String username, @PathVariable String listId){
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.removeUserFromInviteInWatchList(username,listId));
     }
@@ -70,8 +76,6 @@ public class UserController {
     /**
      * Methods for user
      */
-
-
 
     @GetMapping("/{googleId}/{username}")
     public ResponseEntity<?> changeUsername(@PathVariable String googleId, @PathVariable String username) {

@@ -52,6 +52,10 @@ public class WatchlistService {
         return output;
     }
 
+    public WatchList getWatchListById(String id){
+        return watchListRepository.getByID(id);
+    }
+
     public WatchList addMovieToWatchList(Movie movie, String listId) {
         WatchList list = watchListRepository.getByID(listId);
 

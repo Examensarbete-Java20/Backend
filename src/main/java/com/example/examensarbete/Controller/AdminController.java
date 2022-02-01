@@ -18,26 +18,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/admin")
 public class AdminController {
 
-    @Autowired
-    private MovieService movieService;
-    @Autowired
-    private SeriesService seriesService;
+    private final MovieService movieService;
+    private final SeriesService seriesService;
 
     @PostMapping("/save/movie")
     public ResponseEntity<?> saveMovieToDB(@RequestBody Movie movie) {
-        try {
             return ResponseEntity.ok(movieService.saveMovie(movie));
-        } catch (MovieException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
     }
 
     @PostMapping("/save/serie")
     public ResponseEntity<?> saveSeriesToDB(@RequestBody Series series){
-        try {
             return ResponseEntity.ok(seriesService.saveSeries(series));
-        } catch (SeriesException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
     }
 }

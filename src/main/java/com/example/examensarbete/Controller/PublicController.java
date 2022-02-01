@@ -22,12 +22,9 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class PublicController {
 
-    @Autowired
-    private MovieService movieService;
-    @Autowired
-    private SeriesService seriesService;
-    @Autowired
-    private UserService userService;
+    private final MovieService movieService;
+    private final SeriesService seriesService;
+    private final UserService userService;
 
     /**
      * Methods for movies
@@ -35,56 +32,32 @@ public class PublicController {
 
     @GetMapping("/movie/title/{title}")
     public ResponseEntity<?> getMovieId(@PathVariable String title) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(movieService.getTitles(title));
-        } catch (MovieException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(movieService.getTitles(title));
     }
 
     @GetMapping("/movie/{imdb_id}")
     public ResponseEntity<?> getMovie(@PathVariable String imdb_id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(movieService.getMovieByImdbId(imdb_id));
-        } catch (MovieException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(movieService.getMovieByImdbId(imdb_id));
     }
 
     @GetMapping("/movie/all/{imdb_id}")
     public ResponseEntity<?> fetchMovie(@PathVariable String imdb_id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchTitle(imdb_id));
-        } catch (MovieException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(movieService.fetchTitle(imdb_id));
     }
 
     @GetMapping("/movie/all/{imdb_id}/{counter}")
     public ResponseEntity<?> getFiveMovies(@PathVariable String imdb_id, @PathVariable int counter) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(movieService.getFiveMovies(imdb_id, counter));
-        } catch (MovieException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(movieService.getFiveMovies(imdb_id, counter));
     }
 
     @GetMapping("/movie/topTen")
     public ResponseEntity<?> getMovieTopTen() {
-        try {
-            return ResponseEntity.ok(movieService.getTopTen());
-        } catch (MovieException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.ok(movieService.getTopTen());
     }
 
     @PostMapping("/movie/update/{googleId}/{rating}")
     public ResponseEntity<?> updateMovie(@RequestBody Movie movie, @PathVariable String googleId, @PathVariable int rating) {
-        try {
-            return ResponseEntity.ok(movieService.updateMovieRating(movie, googleId, rating));
-        } catch (MovieException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.ok(movieService.updateMovieRating(movie, googleId, rating));
     }
 
     /**
@@ -93,65 +66,37 @@ public class PublicController {
 
     @GetMapping("/series/title/{title}")
     public ResponseEntity<?> getSeriesId(@PathVariable String title) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(seriesService.getTitles(title));
-        } catch (SeriesException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(seriesService.getTitles(title));
     }
 
     @GetMapping("/series/{imdb_id}")
     public ResponseEntity<?> getSeries(@PathVariable String imdb_id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(seriesService.getSeriesByImdbId(imdb_id));
-        } catch (SeriesException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(seriesService.getSeriesByImdbId(imdb_id));
     }
 
     @GetMapping("/series/all/{imdb_id}")
     public ResponseEntity<?> fetchSeries(@PathVariable String imdb_id) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(seriesService.fetchTitle(imdb_id));
-        } catch (SeriesException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(seriesService.fetchTitle(imdb_id));
     }
 
     @GetMapping("/series/all/{imdb_id}/{counter}")
     public ResponseEntity<?> getFiveSeries(@PathVariable String imdb_id, @PathVariable int counter) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(seriesService.getFiveSeries(imdb_id, counter));
-        } catch (SeriesException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(seriesService.getFiveSeries(imdb_id, counter));
     }
 
     @GetMapping("/series/getseries/{imdb_id}")
     public ResponseEntity<?> getSeriesFromDB(@PathVariable String imdb_id) {
-        try {
-            return ResponseEntity.ok(seriesService.getSeriesByImdbId(imdb_id));
-        } catch (SeriesException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.ok(seriesService.getSeriesByImdbId(imdb_id));
     }
 
     @GetMapping("/series/topTen")
     public ResponseEntity<?> getSeriesTopTen() {
-        try {
-            return ResponseEntity.ok(seriesService.getTopTen());
-        } catch (SeriesException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.ok(seriesService.getTopTen());
     }
 
     @PostMapping("/series/update/{googleId}/{rating}")
     public ResponseEntity<?> updateSeries(@RequestBody Series series, @PathVariable String googleId, @PathVariable int rating) {
-        try {
-            return ResponseEntity.ok(seriesService.updateSeriesRating(series, googleId, rating));
-        } catch (SeriesException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.ok(seriesService.updateSeriesRating(series, googleId, rating));
     }
 
     /**
@@ -165,8 +110,6 @@ public class PublicController {
 
     @PostMapping("/create/user")
     public ResponseEntity<?> createUser(@RequestBody User user) {
-        log.info(String.valueOf(user));
-        System.out.println("user: " + user);
         return ResponseEntity.status(HttpStatus.OK).body(userService.createUser(user));
     }
 }

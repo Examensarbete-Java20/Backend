@@ -42,7 +42,6 @@ public class UserController {
 
     @PostMapping("/watchlist/movie/{listId}")
     public ResponseEntity<?> addMovieToWatchList(@RequestBody Movie movie, @PathVariable String listId){
-        System.out.println("hej");
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.addMovieToWatchList(movie,listId));
     }
 
@@ -69,6 +68,11 @@ public class UserController {
     @PutMapping("/watchlist/list/{listId}")
     public ResponseEntity<?> acceptInviteToList(@RequestBody User user, @PathVariable String listId){
         return ResponseEntity.status(HttpStatus.OK).body(watchlistService.acceptInviteToList(user,listId));
+    }
+
+    @DeleteMapping("/watchlist/remove/{listId}")
+    public ResponseEntity<?> removeList(@PathVariable String listId){
+        return ResponseEntity.status(HttpStatus.OK).body(watchlistService.removeList(listId));
     }
 
     /**

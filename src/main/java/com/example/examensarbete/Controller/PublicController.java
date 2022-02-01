@@ -29,6 +29,8 @@ public class PublicController {
     @Autowired
     private UserService userService;
 
+
+
     /**
      * Methods for movies
      */
@@ -157,6 +159,7 @@ public class PublicController {
     /**
      * Methods for user
      */
+
 
     @GetMapping("/{googleId}")
     public ResponseEntity<?> getUserByGoogleID(@PathVariable String googleId) {

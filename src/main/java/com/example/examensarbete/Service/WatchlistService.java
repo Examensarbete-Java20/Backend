@@ -208,4 +208,10 @@ public class WatchlistService {
 
         return watchListRepository.save(list);
     }
+
+    public WatchList removeList(String listId) {
+        WatchList list = watchListRepository.getByID(listId);
+        watchListRepository.delete(list);
+        return list;
+    }
 }

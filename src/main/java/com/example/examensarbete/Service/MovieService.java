@@ -63,8 +63,11 @@ public class MovieService {
             list.add(vote);
             movie.setVoters(list);
         } else {
+            //TODO: Fixa en bättre lösning på rösterna ifall de redan finns.
+            int length = movie.getVoters().size();
             for (String s: movie.getVoters()) {
                 if (s.contains(googleId)) {
+                    length -= 1;
                     oldRating = Integer.parseInt(s.substring(s.indexOf(" ")+1));
                     addVote = 0;
                     movie.getVoters().remove(s);
@@ -72,6 +75,8 @@ public class MovieService {
                     break;
                 }
             }
+            if (length == movie.getVoters().size())
+                movie.getVoters().add(vote);
         }
 
 

@@ -96,7 +96,7 @@ public class PublicController {
         if (regExp.inputValidation(imdb_id))
         return ResponseEntity.status(HttpStatus.OK).body(seriesService.getSeriesByImdbId(imdb_id));
 
-        throw new MovieException("NO SPECIAL CHARACTERS ALLOWED");
+        throw new SeriesException("NO SPECIAL CHARACTERS ALLOWED");
     }
 
     @GetMapping("/series/all/{imdb_id}")
@@ -104,7 +104,7 @@ public class PublicController {
         if (regExp.inputValidation(imdb_id))
         return ResponseEntity.status(HttpStatus.OK).body(seriesService.fetchTitle(imdb_id));
 
-        throw new MovieException("NO SPECIAL CHARACTERS ALLOWED");
+        throw new SeriesException("NO SPECIAL CHARACTERS ALLOWED");
     }
 
     @GetMapping("/series/all/{imdb_id}/{counter}")
@@ -112,7 +112,7 @@ public class PublicController {
         if (regExp.inputValidation(imdb_id))
         return ResponseEntity.status(HttpStatus.OK).body(seriesService.getFiveSeries(imdb_id, counter));
 
-        throw new MovieException("NO SPECIAL CHARACTERS ALLOWED");
+        throw new SeriesException("NO SPECIAL CHARACTERS ALLOWED");
     }
 
     @GetMapping("/series/getseries/{imdb_id}")
@@ -120,7 +120,7 @@ public class PublicController {
         if (regExp.inputValidation(imdb_id))
         return ResponseEntity.ok(seriesService.getSeriesByImdbId(imdb_id));
 
-        throw new MovieException("NO SPECIAL CHARACTERS ALLOWED");
+        throw new SeriesException("NO SPECIAL CHARACTERS ALLOWED");
     }
 
     @GetMapping("/series/topTen")
@@ -133,7 +133,7 @@ public class PublicController {
         if (regExp.inputValidation(googleId))
         return ResponseEntity.ok(seriesService.updateSeriesRating(series, googleId, rating));
 
-        throw new MovieException("NO SPECIAL CHARACTERS ALLOWED");
+        throw new SeriesException("NO SPECIAL CHARACTERS ALLOWED");
     }
 
     /**

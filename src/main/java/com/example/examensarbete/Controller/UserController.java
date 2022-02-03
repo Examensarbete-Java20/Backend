@@ -18,10 +18,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(path = "/user")
 public class UserController {
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private WatchlistService watchlistService;
+    private final UserService userService;
+    private final WatchlistService watchlistService;
 
     /**
      * Methods for watchlists
@@ -83,10 +81,6 @@ public class UserController {
 
     @GetMapping("/{googleId}/{username}")
     public ResponseEntity<?> changeUsername(@PathVariable String googleId, @PathVariable String username) {
-        try {
-            return ResponseEntity.status(HttpStatus.OK).body(userService.changeUsername(googleId, username));
-        } catch (UserException exception) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception.getMessage());
-        }
+        return ResponseEntity.status(HttpStatus.OK).body(userService.changeUsername(googleId, username));
     }
 }

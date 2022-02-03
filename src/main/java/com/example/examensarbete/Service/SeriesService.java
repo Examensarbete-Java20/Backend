@@ -33,7 +33,7 @@ public class SeriesService {
         List<Title> output = rapid.getTitles(title, rapidApiKey, rapid.SERIES).stream().limit(5).collect(Collectors.toList());
 
         if (output.size() == 0)
-            throw new SeriesException(HttpStatus.NOT_FOUND + "  Cant find anything on that title");
+            throw new SeriesException("Can't find anything with that title");
 
         return output;
     }
@@ -42,7 +42,7 @@ public class SeriesService {
         Series output = rapid.getSeriesByImdbId(imdbId,rapidApiKey,seriesRepository);
 
         if (output == null)
-            throw new SeriesException(HttpStatus.NOT_FOUND + "  Series not found");
+            throw new SeriesException("Series not found");
 
         return output;
     }
@@ -51,7 +51,7 @@ public class SeriesService {
         Series temp = seriesRepository.getByImdbId(series.getImdbId());
 
         if (temp != null)
-            throw new SeriesException(HttpStatus.BAD_REQUEST + " Series already exists in database");
+            throw new SeriesException("Series already exists in database");
 
         series.setExist(true);
         return seriesRepository.save(series);

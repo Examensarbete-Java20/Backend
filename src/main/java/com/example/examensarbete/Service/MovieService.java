@@ -30,7 +30,7 @@ public class MovieService {
         List<Title> output = rapid.getTitles(title, rapidApiKey, rapid.MOVIE).stream().limit(5).collect(Collectors.toList());
 
         if (output.size() == 0)
-            throw new MovieException(HttpStatus.NOT_FOUND + "  Cant find anything on that title");
+            throw new MovieException("Can't find anything on that title");
 
         return output;
     }
@@ -39,7 +39,7 @@ public class MovieService {
         Movie output = rapid.getMovieByImdbId(imdbId, rapidApiKey, movieRepository);
 
         if (output == null)
-            throw new MovieException(HttpStatus.NOT_FOUND + " Movie not found");
+            throw new MovieException("Movie not found");
 
         return output;
     }
@@ -48,7 +48,7 @@ public class MovieService {
         Movie temp = movieRepository.getByImdbId(movie.getImdbId());
 
         if (temp != null)
-            throw new MovieException(HttpStatus.BAD_REQUEST + " Movie already exists in database");
+            throw new MovieException("Movie already exists in database");
 
         movie.setExist(true);
         return movieRepository.save(movie);

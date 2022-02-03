@@ -37,4 +37,13 @@ public class ApiExceptionHandler {
                 ZonedDateTime.now(ZoneId.of("Z"))); //CET för svensk tid
         return new ResponseEntity<>(customException, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(WatchListException.class)
+    public ResponseEntity<Object> handleWatchListException(WatchListException watchListException) {
+        CustomException customException = new CustomException(watchListException.getMessage(),
+                HttpStatus.NOT_FOUND,
+                HttpStatus.NOT_FOUND.value(),
+                ZonedDateTime.now(ZoneId.of("Z"))); //CET för svensk tid
+        return new ResponseEntity<>(customException, HttpStatus.NOT_FOUND);
+    }
 }

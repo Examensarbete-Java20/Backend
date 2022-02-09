@@ -26,7 +26,7 @@ public class WatchlistService {
     // TODO: Bryt ut ifsen som är likadana till en privat metod
 
     public WatchList createList(WatchList watchList) {
-        User user = userRepository.getByGoogleId(watchList.getUser().getGoogleId());
+        User user = userRepository.getByGoogleId(watchList.getUser().getGoogleId()).get();
         if (user == null)
             throw new UserException("User with that googleId doesn't exist");
 
@@ -34,6 +34,10 @@ public class WatchlistService {
         watchList.setUser(user);
 
         return watchListRepository.save(watchList);
+    }
+
+    public WatchList getWatchListById(String id){
+        return watchListRepository.getByID(id);
     }
 
     public List<WatchList> getWatchListByGoogleId(String googleId) {
@@ -203,5 +207,11 @@ public class WatchlistService {
             list.addUser(user);
 
         return watchListRepository.save(list);
+    }
+
+    public WatchList removeList(String listId) {
+        WatchList list = watchListRepository.getByID(listId);
+        watchListRepository.delete(list);
+        return list;
     }
 }

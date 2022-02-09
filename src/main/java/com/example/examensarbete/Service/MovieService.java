@@ -21,8 +21,6 @@ public class MovieService {
     private String rapidApiKey;
 
     private RapidApiMethods rapid = new RapidApiMethods();
-    private RestTemplate restTemplate = new RestTemplate();
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Autowired
     private MovieRepository movieRepository;
@@ -32,7 +30,7 @@ public class MovieService {
         List<Title> output = rapid.getTitles(title, rapidApiKey, rapid.MOVIE).stream().limit(5).collect(Collectors.toList());
 
         if (output.size() == 0)
-            throw new MovieException(HttpStatus.NOT_FOUND + "  Cant find anything on that title");
+            throw new MovieException("Can't find anything on that title");
 
         return output;
     }
@@ -41,7 +39,7 @@ public class MovieService {
         Movie output = rapid.getMovieByImdbId(imdbId, rapidApiKey, movieRepository);
 
         if (output == null)
-            throw new MovieException(HttpStatus.NOT_FOUND + " Movie not found");
+            throw new MovieException("Movie not found");
 
         return output;
     }
@@ -50,7 +48,7 @@ public class MovieService {
         Movie temp = movieRepository.getByImdbId(movie.getImdbId());
 
         if (temp != null)
-            throw new MovieException(HttpStatus.BAD_REQUEST + " Movie already exists in database");
+            throw new MovieException("Movie already exists in database");
 
         movie.setExist(true);
         return movieRepository.save(movie);
@@ -65,8 +63,11 @@ public class MovieService {
             list.add(vote);
             movie.setVoters(list);
         } else {
+            //TODO: Fixa en bättre lösning på rösterna ifall de redan finns.
+            int length = movie.getVoters().size();
             for (String s: movie.getVoters()) {
                 if (s.contains(googleId)) {
+                    length -= 1;
                     oldRating = Integer.parseInt(s.substring(s.indexOf(" ")+1));
                     addVote = 0;
                     movie.getVoters().remove(s);
@@ -74,6 +75,8 @@ public class MovieService {
                     break;
                 }
             }
+            if (length == movie.getVoters().size())
+                movie.getVoters().add(vote);
         }
 
 
